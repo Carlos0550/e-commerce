@@ -47,10 +47,45 @@ function UseAuthentication() {
         }
     },[])
 
+    const loginUser = useCallback(async(formValues: RegisterFormValues): Promise<boolean>=> {
+        const url = new URL(`${getServiceUrl("authentication")}login-user`)
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formValues)
+            })
+            const responseData = await response.json()
+            console.log(responseData)
+            if(!response.ok) throw new Error(responseData.msg || "Error desconocido")
+            showNotification({
+                color: 'green',
+                title: responseData.msg || "Bienvenido nuevamente!",
+                message: '',
+                autoClose: 2500,
+                position: 'top-right',
+            })
+
+            return true
+        } catch (error) {
+            console.log(error)
+            showNotification({
+                color: 'red',
+                title: 'Error',
+                message: error instanceof Error ? error.message : "Error desconocido",
+                autoClose: 5000,
+                position: 'top-right',
+            })
+            return false
+        }
+    },[])
+
     return useMemo(() => ({
-        loginData,setLoginData, createUserAccount
+        loginData,setLoginData, createUserAccount,loginUser
     }), [
-        loginData,setLoginData, createUserAccount
+        loginData,setLoginData, createUserAccount, loginUser
     ])
 }
 

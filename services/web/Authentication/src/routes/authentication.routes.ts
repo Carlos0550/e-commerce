@@ -1,7 +1,8 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import * as AuthenticationController from "../controllers/CreateAccount/create_account.controller"
 import { CreateAccountBody } from "../Types/CreateAccountTypes";
+import { createAccount } from "../controllers/CreateAccount/create_account.controller";
+import { loginUser } from "../controllers/LoginUser/login_user.controller";
 
 const router = Router();
 
@@ -18,6 +19,15 @@ router.post("/create-account", (req:Request<{},{},CreateAccountBody,{}>, res:Res
     }
 
     next()
-}, AuthenticationController.createAccount)
+}, createAccount)
+
+router.post("/login-user", (req:Request<{},{},CreateAccountBody,{}>, res:Response, next: NextFunction): void => {
+    const { user_email, user_password} = req.body
+    if(!user_email || !user_password){
+        res.status(400).json({msg: "Todos los campos son requeridos"})
+        return
+    }
+    next()
+}, loginUser)
 
 export default router

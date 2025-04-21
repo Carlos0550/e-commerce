@@ -3,6 +3,7 @@ import pool from "../../database"
 import { getQueries } from "../../QueriesHandler";
 import { CreateAccountBody } from "../../Types/CreateAccountTypes";
 import { Request, Response } from "express";
+import { hashPassword } from "../../utils/PasswordsUtils";
 
 export const createAccount = async(req:Request<{},{},CreateAccountBody,{}>, res:Response): Promise<void> => {
     let client;
@@ -36,12 +37,13 @@ export const createAccount = async(req:Request<{},{},CreateAccountBody,{}>, res:
                     msg: "Ya existe una cuenta con el correo proporcionado"
                 })
                 return
-            }
+            }   
 
+            const hashedPassword = await hashPassword(user_password)
             const response = await client.query(CRQueries[1],[
                 user_name,
                 user_email,
-                user_password
+                hashedPassword
             ])
 
             if(response?.rowCount && response.rowCount > 0){

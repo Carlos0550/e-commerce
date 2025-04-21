@@ -6,28 +6,25 @@ import UseAuthentication from '../../../../Context/UseAuthentication';
 import { ContextAuthentication } from '../../../../Context/ContextTypes/AuthenticationTypes';
 
 
-function useRegisterForm() {
+function useLoginForm() {
     const authHook: ContextAuthentication = UseAuthentication()
-    const {createUserAccount} = authHook
-    const [registerFormValues, setRegisterFormValues] = useState<RegisterFormValues>({
-        user_name: '',
+    const {loginUser} = authHook
+    const [loginFormValues, setloginFormValues] = useState<Partial<RegisterFormValues>>({
         user_email: '',
         user_password: '',
-        user_password_confirmation: '',
-        register_as_admin: false
     })
     const [errores, setErrores] = useState<Partial<RegisterFormValues>>({})
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setRegisterFormValues((prevValues) => ({
+        setloginFormValues((prevValues) => ({
           ...prevValues,
           [name]: value,
         }));
     }
 
     const handleCheckboxChange = () => {
-        setRegisterFormValues((prev) => ({
+        setloginFormValues((prev) => ({
             ...prev,
             register_as_admin: !prev.register_as_admin
         }))
@@ -35,18 +32,13 @@ function useRegisterForm() {
 
 
     const handleVerifyFields = (): boolean => {
-        const { user_password, user_password_confirmation } = registerFormValues;
         const error: Partial<RegisterFormValues> = {};
       
-        for (const [key, value] of Object.entries(registerFormValues)) {
+        for (const [key, value] of Object.entries(loginFormValues)) {
             if(key === "register_as_admin") continue
           if (!value) {
             error[key as keyof RegisterFormValues] = 'Este campo es requeridoo';
           }
-        }
-      
-        if (user_password !== user_password_confirmation) {
-          error.user_password_confirmation = 'Las contraseñas no coinciden';
         }
       
         if (Object.keys(error).length > 0) {
@@ -65,24 +57,24 @@ function useRegisterForm() {
         return true;
       };
 
-      const [creatingAccount, setCreatingAccount] = useState(false)
+      const [logginAccount, setlogginAccount] = useState(false)
     const onFinish = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if(handleVerifyFields()){
-            setCreatingAccount(true)
-            await createUserAccount(registerFormValues)
-            setTimeout(()=> setCreatingAccount(false), 1000)
+            setlogginAccount(true)
+            await loginUser(loginFormValues)
+            setTimeout(()=> setlogginAccount(false), 1000)
         }
     }
 
   return {
-    registerFormValues,
+    loginFormValues,
     handleChange,
     onFinish   ,
     errores,
     handleCheckboxChange,
-    creatingAccount
+    logginAccount
   }
 }
 
-export default useRegisterForm
+export default useLoginForm

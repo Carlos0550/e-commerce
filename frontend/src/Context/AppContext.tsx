@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo } from "react";
 import { AppContextInterface } from "./ContextTypes/AppContextTypes";
-import UseAuthentication from "./UseAuthentication";
 
 const AppContext = createContext<AppContextInterface | undefined>(undefined);
 
@@ -13,11 +12,11 @@ export const useAppContext = () => {
 };
 
 export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
-    const AuthenticationHook = UseAuthentication()
+    
     const AppContextValues = useMemo(()=> ({
-        AuthenticationHook
+        
     }),[
-        AuthenticationHook
+        
     ])
     
     return (
