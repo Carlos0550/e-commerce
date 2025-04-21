@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { RegisterFormValues } from '../../../../Context/ContextTypes/RegisterUserForm'
 import { showNotification } from '@mantine/notifications';
-
-import UseAuthentication from '../../../../Context/UseAuthentication';
-import { ContextAuthentication } from '../../../../Context/ContextTypes/AuthenticationTypes';
+import { useAppContext } from '../../../../Context/AppContext';
 
 
 function useRegisterForm() {
-    const authHook: ContextAuthentication = UseAuthentication()
-    const {createUserAccount} = authHook
+    const { 
+      AuthenticationHook:{
+        createUserAccount
+      }
+     } = useAppContext()
     const [registerFormValues, setRegisterFormValues] = useState<RegisterFormValues>({
         user_name: '',
         user_email: '',
