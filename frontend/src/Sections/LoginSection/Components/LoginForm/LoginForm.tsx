@@ -1,5 +1,4 @@
 import { Button, Input, PasswordInput } from '@mantine/core'
-import React from 'react'
 
 function LoginForm() {
   return (

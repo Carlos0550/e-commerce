@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { RegisterFormValues } from '../../../../Context/ContextTypes/RegisterUserForm'
 import { showNotification } from '@mantine/notifications';
 import { useAppContext } from '../../../../Context/AppContext';
