@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { LoginDataState } from './ContextTypes/AuthenticationTypes'
 import { RegisterFormValues } from './ContextTypes/RegisterUserForm';
-import { authentication_url } from '../GlobalAPIs';
+import { getServiceUrl } from '../GlobalAPIs';
 import { showNotification } from '@mantine/notifications';
 
 function UseAuthentication() {
@@ -14,7 +14,7 @@ function UseAuthentication() {
     });
 
     const createUserAccount = useCallback(async(formValues: RegisterFormValues): Promise<boolean>=> {
-        const url = new URL(`${authentication_url}create-account`)
+        const url = new URL(`${getServiceUrl("authentication")}create-account`)
         try {
             const response = await fetch(url, {
                 method: "POST",
