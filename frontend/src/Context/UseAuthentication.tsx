@@ -74,7 +74,7 @@ function UseAuthentication() {
                 position: 'top-right',
             })
 
-            navigate("/admin-home")
+            navigate("/admin-dashboard")
             return true
         } catch (error) {
             console.log(error)
