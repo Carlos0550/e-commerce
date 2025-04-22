@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import "./Product&CategoriesManager.css"
 import { Tabs } from '@mantine/core'
+import ProductForm from '../ProductManager/ProductForm';
 function Product_and_CategoriesManager() {
   const [activeTab, setActiveTab] = useState<string | null>('tab1');
   return (
@@ -17,7 +18,7 @@ function Product_and_CategoriesManager() {
           </Tabs.List>
 
           <Tabs.Panel value="tab1" pt="xs">
-            Productos
+            <ProductForm/>
           </Tabs.Panel>
 
           <Tabs.Panel value="tab2" pt="xs">

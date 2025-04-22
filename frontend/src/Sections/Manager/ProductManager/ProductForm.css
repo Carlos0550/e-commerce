@@ -1,0 +1,23 @@
+.product-form {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .form-grid {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-evenly;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .product-wrapper-input{
+    text-align: start;
+  }
+  
+  @media (max-width: 860px) {
+    .form-grid {
+      grid-template-columns: 1fr; /* En pantallas chicas apila los campos */
+    }
+  }
+  
