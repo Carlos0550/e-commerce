@@ -10,7 +10,7 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<LoginManager/>}/>
-      <Route path='/admin-home' element={<ManagerHome/>}/>
+      <Route path='/admin-dashboard/*' element={<ManagerHome/>}/>
     </Routes>
   )
 }
