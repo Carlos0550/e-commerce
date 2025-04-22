@@ -8,6 +8,16 @@ function Layout({children}: {children: React.ReactNode}) {
             loginData
         }
     } = useAppContext()
+
+    const HandleScrollInNavMobile = () => {
+        if (window.innerWidth < 768) {
+            const managerContent = document.querySelector(".manager-right-content");
+            setTimeout(() => {
+                managerContent?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
+        }
+    }
+    
     return (
         <div className="manager-container">
             <div className="manager__wrapper">
@@ -50,8 +60,8 @@ function Layout({children}: {children: React.ReactNode}) {
                 <div className="manager-right">
                     <nav className="nav">
                         <ul className="nav-list">
-                            <li><Link to={"/admin-dashboard"}>Inicio</Link></li>
-                            <li><Link to={"product-manager"}>Productos</Link></li>
+                            <li ><Link to={"/admin-dashboard"}>Inicio</Link></li>
+                            <li><Link to={"/admin-dashboard/product-manager"} onClick={HandleScrollInNavMobile}>Productos</Link></li>
                             <li><Link to={""}>Clientes</Link></li>
                             <li><Link to={""}>Despachos</Link></li>
                             <li><Link to={""}>Configuraciones</Link></li>
