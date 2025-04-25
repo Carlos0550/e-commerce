@@ -47,7 +47,6 @@
   
   .manager-right {
     flex: 3;
-    
     text-align: center;
     display: flex;
     flex-direction: column;
