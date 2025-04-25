@@ -1,8 +1,183 @@
-import React from 'react'
-
+import { useState } from "react"
+import { ProductFormValues } from "../../../../Context/ContextTypes/ProductFormTypes"
+import { v4 as uuid } from "uuid"
+import { showNotification } from "@mantine/notifications";
+import { useAppContext } from "../../../../Context/AppContext";
 function useProductForm() {
+  const {
+    productsHook:{
+      saveProduct
+    }
+  } = useAppContext()
+  const [productForm, setProductForm] = useState<ProductFormValues>({
+    product_name: "",
+    product_category: "",
+    product_description: "",
+    product_images: [],
+    product_price: "",
+    product_stock: "",
+  })
+
+  const removeImage = (image_id: string) => {
+    setProductForm((prev) => ({
+      ...prev,
+      product_images: prev.product_images.filter(img => img.image_id !== image_id)
+    }));
+  };
+  const handleUploadImages = (files: File[]) => {
+    if(productForm.product_images.length + files.length > 6) {
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "No puedes subir mas de 5 imagenes",
+        position: "top-right",
+        autoClose:2500
+      })
+      return
+    }
+    if(productForm.product_images.length === 6){
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "No puedes subir mas de 5 imagenes",
+        position: "top-right",
+        autoClose:2500
+      })
+      return
+    }
+
+    const date = new Date().toISOString().split("T")[0];
+    const newImages = files.map((file) => {
+      const renamedFile = new File([file], `${date}-${uuid().slice(0, 8)}`, {
+        type: file.type,
+        lastModified: file.lastModified,
+      });
+  
+      return {
+        image_name: `${date}-${uuid().slice(0, 8)}`,
+        originFileObj: renamedFile,
+        image_id: uuid(),
+        isNew: true,
+      };
+    });
+  
+    setProductForm((prev) => ({
+      ...prev,
+      product_images: [...prev.product_images, ...newImages],
+    }));
+  };
+  
+
+  const handleChangeValues = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProductForm((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }))
+  }
+
+  const traducciones = {
+    "product_name": "Nombre del producto",
+    "product_category": "Categoria",
+    "product_description": "Descripcion",
+    "product_images": "Imagenes",
+    "product_price": "Precio",
+    "product_stock": "Stock"
+  }
+
+  const validateForm = () => {
+    const {
+      product_images,
+      product_name,
+      product_price,
+      product_stock,
+      product_description
+    } = productForm
+
+    for (const key in productForm) {
+      if (productForm[key as keyof ProductFormValues] === "") {
+        showNotification({
+          color: "red",
+          title: "Error",
+          message: `El campo "${traducciones[key as keyof ProductFormValues]}" es obligatorio`,
+          position: "top-right",
+          autoClose:2500
+        })
+        return false
+      }
+    }
+
+    if(product_images.length === 0){
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "Debes subir al menos una imagen",
+        position: "top-right",
+        autoClose:2500
+      })
+      return false
+    }
+
+    if(product_name.length < 6){
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "El nombre debe tener al menos 6 caracteres",
+        position: "top-right",
+        autoClose:2500
+      });
+      return false
+    }
+
+    if(product_description === "<p></p>" || product_description.length < 20){
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "La descripcion debe tener al menos 20 caracteres",
+        position: "top-right",
+        autoClose:2500
+      });
+      return false
+    }
+
+    if(parseFloat(product_stock) <= 0){
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "El stock debe ser mayor a 0",
+        position: "top-right",
+        autoClose:2500
+      });
+      return false
+    }
+
+    if(parseFloat(product_price) <= 0){
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "El precio debe ser mayor a 0",
+        position: "top-right",
+        autoClose:2500
+      });
+      return false
+    }
+    return true
+  }
+
+
+  const onFinish = (e:React.FormEvent) => {
+    e.preventDefault()
+    if(validateForm()){
+      saveProduct(productForm)
+    }
+  }
+
   return {
-    
+    handleUploadImages,
+    productForm,
+    handleChangeValues,
+    removeImage,
+    onFinish
   }
 }
 
