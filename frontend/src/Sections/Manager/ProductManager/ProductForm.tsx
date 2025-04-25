@@ -1,4 +1,4 @@
-import { Input, Select } from '@mantine/core'
+import { Button, Input, Select } from '@mantine/core'
 import "./ProductForm.css"
 import '@mantine/tiptap/styles.css';
 import '@mantine/dropzone/styles.css';
@@ -9,30 +9,55 @@ import StarterKit from '@tiptap/starter-kit';
 import { Group, Text } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-
-
-
+import { useEffect, useState } from 'react';
+import useProductForm from './utils/useProductForm';
+import { FaTrash } from "react-icons/fa";
 function ProductForm() {
-    const content =
-        '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
+    const [content, setContent] = useState('');
+    const {
+        handleUploadImages,
+        productForm,
+        handleChangeValues,
+        removeImage,
+        onFinish
+    } = useProductForm()
 
     const editor = useEditor({
-        extensions: [
-            StarterKit,
-        ],
-        content,
+        extensions: [StarterKit],
+        content: productForm.product_description,
     });
+
+    useEffect(() => {
+        if (!editor) return;
+
+        const updateDescription = () => {
+            const html = editor.getHTML();
+            handleChangeValues({
+                target: {
+                    name: "product_description",
+                    value: html,
+                },
+            } as React.ChangeEvent<HTMLInputElement>);
+        };
+
+        editor.on("update", updateDescription);
+
+        return () => {
+            editor.off("update", updateDescription);
+        };
+    }, [editor]);
 
     function DropzoneInput(props: Partial<DropzoneProps>) {
         return (
             <Dropzone
-                onDrop={(files) => console.log('accepted files', files)}
+                onDrop={(files) => handleUploadImages(files)}
                 onReject={(files) => console.log('rejected files', files)}
                 maxSize={5 * 1024 ** 2}
                 accept={IMAGE_MIME_TYPE}
                 {...props}
             >
                 <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+
                     <Dropzone.Accept>
                         <IconUpload size={52} color="var(--mantine-color-blue-6)" stroke={1.5} />
                     </Dropzone.Accept>
@@ -42,13 +67,12 @@ function ProductForm() {
                     <Dropzone.Idle>
                         <IconPhoto size={52} color="var(--mantine-color-dimmed)" stroke={1.5} />
                     </Dropzone.Idle>
-
                     <div>
                         <Text size="xl" inline>
-                            Drag images here or click to select files
+                            Arrastrá acá tus imagenes o hacé click para subirlas
                         </Text>
                         <Text size="sm" c="dimmed" inline mt={7}>
-                            Attach as many files as you like, each file should not exceed 5mb
+                            Puedes subir hasta 6 imagenes
                         </Text>
                     </div>
                 </Group>
@@ -56,7 +80,7 @@ function ProductForm() {
         );
     }
     return (
-        <form className="product-form">
+        <form className="product-form" onSubmit={onFinish}>
             <div className="form-grid">
                 <Input.Wrapper
                     label="Nombre del producto"
@@ -67,6 +91,8 @@ function ProductForm() {
                     <Input
                         name="product_name"
                         type='text'
+                        onChange={handleChangeValues}
+                        value={productForm.product_name}
 
                     />
                 </Input.Wrapper>
@@ -78,15 +104,18 @@ function ProductForm() {
                 >
                     <Select
                         name="product_category"
+                        onChange={(val) =>
+                            handleChangeValues({ target: { name: "product_category", value: val } } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        value={productForm.product_category}
                         data={[
-                            { value: 'faciales', label: 'Faciales' },
-                            { value: 'corporales', label: 'Corporales' },
-                            { value: 'capilares', label: 'Capilares' },
-                            { value: 'servicios', label: 'Servicios' },
-                            { value: 'otros', label: 'Otros' }
+                            { value: '1', label: 'Faciales' },
+                            { value: '2', label: 'Corporales' },
+                            { value: '3', label: 'Capilares' },
+                            { value: '4', label: 'Servicios' },
+                            { value: '5', label: 'Otros' }
                         ]}
                         searchable
-                        nothingFound="No se encontró ninguna categoría"
                         maxDropdownHeight={150}
                     />
                 </Input.Wrapper>
@@ -98,7 +127,21 @@ function ProductForm() {
                 >
                     <Input name="product_price"
                         type='number'
+                        onChange={handleChangeValues}
+                        value={productForm.product_price}
+                    />
+                </Input.Wrapper>
 
+                <Input.Wrapper
+                    label="Stock disponible"
+                    description="¿Cuantos productos hay en stock?"
+                    required
+                    className='product-wrapper-input'
+                >
+                    <Input name="product_stock"
+                        type='number'
+                        onChange={handleChangeValues}
+                        value={productForm.product_stock}
                     />
                 </Input.Wrapper>
 
@@ -107,8 +150,8 @@ function ProductForm() {
                     label="Descripción del producto"
                     description="Ingresá una breve descripción de tu producto"
                 >
-                    <RichTextEditor editor={editor}>
-                        <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                    <RichTextEditor editor={editor} className='product-editor'>
+                        <RichTextEditor.Toolbar >
                             <RichTextEditor.ControlsGroup>
                                 <RichTextEditor.Bold />
                                 <RichTextEditor.Italic />
@@ -116,7 +159,6 @@ function ProductForm() {
                                 <RichTextEditor.Strikethrough />
                                 <RichTextEditor.ClearFormatting />
                                 <RichTextEditor.Highlight />
-                                <RichTextEditor.Code />
                             </RichTextEditor.ControlsGroup>
 
                             <RichTextEditor.ControlsGroup>
@@ -160,11 +202,33 @@ function ProductForm() {
                 <Input.Wrapper
                     className='product-wrapper-input'
                     label="Imagen/es del producto"
-                    description="Ingresá las imagenes de tu producto"
+                    description="Ingresá las imagenes de tu producto (la primera será la portada)"
                 >
-                    <DropzoneInput/>
+                    <DropzoneInput />
+                    <div className="image-preview-wrapper">
+                        {productForm.product_images.map((img) => (
+                            <div key={img.image_id} className="image-preview-item">
+                                <img
+                                    src={URL.createObjectURL(img.originFileObj)}
+                                    alt={img.image_name}
+                                    width={100}
+                                    className="preview-thumbnail"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removeImage(img.image_id)}
+                                    className="remove-image-button"
+                                >
+                                    <FaTrash />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+
                 </Input.Wrapper>
+            <Button className='product-form-button' type='submit' color='dark' c={"white"}>Guardar Producto</Button>
             </div>
+
         </form>
 
     )
