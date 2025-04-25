@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 services/web/Authentication/.env
 frontend/.env
+services/web/e-commerce
+e-commerce
