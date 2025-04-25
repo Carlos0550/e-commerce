@@ -1,4 +1,5 @@
 import { LoginDataState } from "./AuthenticationTypes";
+import { ProductFormValues } from "./ProductFormTypes";
 import { RegisterFormValues } from "./RegisterUserForm";
 
 export interface ContextAuthentication{
@@ -9,6 +10,11 @@ export interface ContextAuthentication{
 
 }
 
+export interface ProductsHookInterface{
+    saveProduct: (productValues: ProductFormValues) => Promise<void>,
+}
+
 export interface AppContextInterface{
-    AuthenticationHook: ContextAuthentication
+    AuthenticationHook: ContextAuthentication,
+    productsHook: ProductsHookInterface
 }
