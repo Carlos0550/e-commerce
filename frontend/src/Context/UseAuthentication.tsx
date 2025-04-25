@@ -6,7 +6,7 @@ import { showNotification } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react'
 function UseAuthentication() {
-    const [loginData, setLoginData] = useState<Partial<LoginDataState>>({
+    const [loginData, setLoginData] = useState<LoginDataState>({
         user_email: "",
         user_name: "",
         user_id: ""
