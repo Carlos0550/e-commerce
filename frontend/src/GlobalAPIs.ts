@@ -1,12 +1,10 @@
-const isProduction = true
-console.log(isProduction)
+const isProduction = false
 const BASE_URL_DEV = "http://localhost"
 
-// Aquí definís todos tus servicios
 type ServiceConfig = {
   port: string
   path: string
-  prodUrl?: string // opcional, por si ese microservicio está en un dominio aparte
+  prodUrl?: string 
 }
 
 const services: Record<string, ServiceConfig> = {
@@ -15,7 +13,11 @@ const services: Record<string, ServiceConfig> = {
     path: "/api/",
     prodUrl: "https://e-commerce-development.up.railway.app", 
   },
-  
+  storage:{
+    port: "5001",
+    path: "/api/",
+    prodUrl: ""
+  }
 }
 
 export const getServiceUrl = (service: keyof typeof services): string => {
