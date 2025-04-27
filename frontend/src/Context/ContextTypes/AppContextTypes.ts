@@ -11,7 +11,7 @@ export interface ContextAuthentication{
 }
 
 export interface ProductsHookInterface{
-    saveProduct: (productValues: ProductFormValues) => Promise<void>,
+    saveProduct: (productValues: ProductFormValues) => Promise<boolean>,
 }
 
 export interface AppContextInterface{
