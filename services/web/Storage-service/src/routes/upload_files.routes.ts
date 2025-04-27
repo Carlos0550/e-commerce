@@ -42,13 +42,11 @@ router.post("/create-product", uploads.array("product_images"), async (
             !product_name ||
             !product_description ||
             !product_price ||
-            !product_stock ||
-            !product_category
+            !product_stock
         ) {
-            throw new Error("Todos los campos son requeridos");
+            throw new Error('Verifique que los campos con "*" no esten vacíos');
         }
 
-        console.log(files)
 
         next();
     } catch (error: any) {
