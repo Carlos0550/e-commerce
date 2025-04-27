@@ -13,9 +13,14 @@ const services: Record<string, ServiceConfig> = {
     path: "/api/",
     prodUrl: "https://e-commerce-development.up.railway.app", 
   },
-  storage:{
+  products:{
     port: "5001",
     path: "/api/",
+    prodUrl: ""
+  },
+  categories:{
+    port: "5002",
+    path: "/api/categories/",
     prodUrl: ""
   }
 }
