@@ -3,29 +3,23 @@ import "./ProductForm.css"
 import '@mantine/tiptap/styles.css';
 import '@mantine/dropzone/styles.css';
 
-import { RichTextEditor, Link } from '@mantine/tiptap';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { RichTextEditor } from '@mantine/tiptap';
 import { Group, Text } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useProductForm from './utils/useProductForm';
 import { FaTrash } from "react-icons/fa";
 function ProductForm() {
-    const [content, setContent] = useState('');
     const {
         handleUploadImages,
         productForm,
         handleChangeValues,
         removeImage,
-        onFinish
+        onFinish,
+        savingProduct,
+        editor
     } = useProductForm()
-
-    const editor = useEditor({
-        extensions: [StarterKit],
-        content: productForm.product_description,
-    });
 
     useEffect(() => {
         if (!editor) return;
@@ -226,7 +220,7 @@ function ProductForm() {
                     </div>
 
                 </Input.Wrapper>
-            <Button className='product-form-button' type='submit' color='dark' c={"white"}>Guardar Producto</Button>
+            <Button className='product-form-button' type='submit' color='dark' c={"white"} disabled={savingProduct} loading={savingProduct}>Guardar Producto</Button>
             </div>
 
         </form>
