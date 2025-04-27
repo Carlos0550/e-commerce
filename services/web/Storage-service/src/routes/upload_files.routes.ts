@@ -4,7 +4,7 @@ import { ProductFormValues } from "../Types/UploadFilesTypes";
 import { checkIsAdmin } from "../utils/CheckIsAdmin";
 import { rollbackFiles } from "../utils/RollbackFiles";
 import { QueryWithUserId } from "../Types/QueryWithUserId";
-import { saveProduct } from "../controllers/upload_files.controller";
+import { saveProduct } from "../controllers/Products/upload_files.controller";
 
 const router = Router();
 
