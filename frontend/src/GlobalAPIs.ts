@@ -19,8 +19,8 @@ const services: Record<string, ServiceConfig> = {
     prodUrl: ""
   },
   categories:{
-    port: "5002",
-    path: "/api/categories/",
+    port: "5001",
+    path: "/api/categories",
     prodUrl: ""
   }
 }

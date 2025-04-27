@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import { ProductFormValues } from "../Types/UploadFilesTypes";
-import { QueryWithUserId } from "../Types/QueryWithUserId";
-import { getQueries } from "../QueriesHandler";
+import { ProductFormValues } from "../../Types/UploadFilesTypes";
+import { QueryWithUserId } from "../../Types/QueryWithUserId";
+import { getQueries } from "../../QueriesHandler";
 import path from "path";
-import pool from "../database";
+import pool from "../../database";
 
 export const saveProduct: RequestHandler<{}, any, ProductFormValues, QueryWithUserId> = async (
   req,

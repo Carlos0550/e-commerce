@@ -14,7 +14,12 @@ export interface ProductsHookInterface{
     saveProduct: (productValues: ProductFormValues) => Promise<boolean>,
 }
 
+export interface CategoriesHookInterface{
+    saveCategory: (categoryName: string) => Promise<boolean>
+}
+
 export interface AppContextInterface{
     AuthenticationHook: ContextAuthentication,
-    productsHook: ProductsHookInterface
+    productsHook: ProductsHookInterface,
+    categoriesHook: CategoriesHookInterface
 }

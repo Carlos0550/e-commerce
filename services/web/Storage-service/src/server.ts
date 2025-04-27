@@ -13,7 +13,7 @@ import pool from "./database"
 import path from "path";
 
 import uploadFilesRouter from "./routes/upload_files.routes";
-
+import categoriesRouter from "./routes/categories.routes"
 
 (async() => {
     try {
@@ -29,6 +29,7 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.use("/api", uploadFilesRouter)
+app.use("/api/categories", categoriesRouter)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 const PORT = process.env.PORT || 5001;

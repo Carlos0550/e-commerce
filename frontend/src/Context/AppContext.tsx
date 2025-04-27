@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo } from "react";
 import { AppContextInterface } from "./ContextTypes/AppContextTypes";
 import UseAuthentication from "./UseAuthentication";
 import useProducts from "./useProducts";
+import useCategory from "./useCategory";
 
 const AppContext = createContext<AppContextInterface | undefined>(undefined);
 
@@ -18,12 +19,16 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
     const { loginData } = AuthenticationHook
 
     const productsHook = useProducts(loginData)
+    const categoriesHook = useCategory(loginData)
+    
     const AppContextValues = useMemo(()=> ({
         AuthenticationHook,
-        productsHook
+        productsHook,
+        categoriesHook
     }),[
         AuthenticationHook,
-        productsHook
+        productsHook,
+        categoriesHook
     ])
     
     return (
