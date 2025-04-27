@@ -5,14 +5,14 @@ import { LoginDataState } from './ContextTypes/AuthenticationTypes'
 import { showNotification } from '@mantine/notifications'
 
 function useProducts(loginData: LoginDataState) {
-  const saveProduct = useCallback(async(productValues: ProductFormValues) => {
+  const saveProduct = useCallback(async(productValues: ProductFormValues): Promise<boolean> => {
     const formData = new FormData()
-    const url = new URL(`${getServiceUrl("storage")}create-product`)
+    const url = new URL(`${getServiceUrl("products")}create-product`)
     url.searchParams.append("user_id", loginData.user_id)
 
     for (const [key, value] of Object.entries(productValues)) {
       if(key === "product_images") continue
-      formData.append(key, value)
+      formData.append(key, value || "")
     }
 
     productValues.product_images.forEach((img) => {
