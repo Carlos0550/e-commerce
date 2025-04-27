@@ -16,12 +16,12 @@ const services: Record<string, ServiceConfig> = {
   products:{
     port: "5001",
     path: "/api/",
-    prodUrl: ""
+    prodUrl: "https://products-service-development.up.railway.app"
   },
   categories:{
     port: "5001",
     path: "/api/categories",
-    prodUrl: ""
+    prodUrl: "https://products-service-development.up.railway.app"
   }
 }
 
