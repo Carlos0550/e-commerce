@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, Router } from "express";
 import { QueryWithUserId } from "../Types/QueryWithUserId";
 import { SaveCategoryBody } from "../controllers/Categories/Types/SaveCategoryTypes";
 
-import { saveCategory } from "../controllers/Categories/categories.controller";
+import { saveCategory, getCategories, updateCategory } from "../controllers/Categories/categories.controller";
 const router = Router();
 
 router.post("/create-category", async(
@@ -12,7 +12,6 @@ router.post("/create-category", async(
 ): Promise<void> => {
     const { user_id } = req.query
     const { category_name }  = req.body
-    console.log(user_id, category_name)
     if(!user_id || !category_name){
         res.status(400).json({
             msg: "Todos los campos son requeridos"
@@ -22,5 +21,38 @@ router.post("/create-category", async(
 
     next()
 }, saveCategory)
+
+router.put("/update-category", async(
+    req: Request<{}, {}, SaveCategoryBody, QueryWithUserId>,
+    res: Response,
+    next:NextFunction
+): Promise<void> => {
+    const { user_id } = req.query
+    const { category_name }  = req.body
+    if(!user_id || !category_name){
+        res.status(400).json({
+            msg: "Todos los campos son requeridos"
+        })
+        return
+    }
+
+    next()
+}, updateCategory)
+
+router.get("/get-categories", async(
+    req: Request<{}, {}, SaveCategoryBody, QueryWithUserId>,
+    res: Response,
+    next:NextFunction
+): Promise<void> => {
+    const { user_id } = req.query
+    if(!user_id){
+        res.status(400).json({
+            msg: "Todos los campos son requeridos"
+        })
+        return
+    }
+
+    next()
+}, getCategories)
 
 export default router

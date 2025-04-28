@@ -1,0 +1,1 @@
+SELECT * FROM categories WHERE ct_manager_id = $1

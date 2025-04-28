@@ -1,4 +1,5 @@
 import { LoginDataState } from "./AuthenticationTypes";
+import { Categories } from "./CategoriesTypes";
 import { ProductFormValues } from "./ProductFormTypes";
 import { RegisterFormValues } from "./RegisterUserForm";
 
@@ -15,7 +16,12 @@ export interface ProductsHookInterface{
 }
 
 export interface CategoriesHookInterface{
-    saveCategory: (categoryName: string) => Promise<boolean>
+    saveCategory: (categoryName: string) => Promise<boolean>,
+    updateCategory: (categoryName: string, categoryId: string) => Promise<boolean>,
+    getCategories: () => Promise<boolean>,
+    deleteCategory: (categoryId: string) => Promise<boolean>,
+    categories: Categories[]
+    
 }
 
 export interface AppContextInterface{

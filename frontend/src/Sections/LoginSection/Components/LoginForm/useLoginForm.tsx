@@ -66,7 +66,7 @@ function useLoginForm() {
         if(handleVerifyFields()){
             setlogginAccount(true)
             await loginUser(loginFormValues)
-            setTimeout(()=> setlogginAccount(false), 1000)
+            setlogginAccount(false)
         }
     }
 

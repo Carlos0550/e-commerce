@@ -47,6 +47,8 @@ function LoginForm() {
             color='violet'
             mt={5}
             fullWidth
+            loading={logginAccount}
+            disabled={logginAccount}
         >Iniciar Sesión</Button>
       </form>
     </div>

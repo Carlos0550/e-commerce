@@ -103,7 +103,7 @@ function UseAuthentication() {
                 position: 'top-right',
               });
             }
-          }, 500);
+          }, 100);
         return () => clearTimeout(timer);
         
     }, [location, loginData])

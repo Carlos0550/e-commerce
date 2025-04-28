@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-
+//services/web/Storage-service/src/utils/SaveFilesFromRequest.ts
 const uploadPath = path.join(__dirname, "..", "uploads");
 
 if (!fs.existsSync(uploadPath)) {

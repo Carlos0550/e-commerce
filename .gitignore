@@ -27,3 +27,4 @@ frontend/.env
 services/web/e-commerce
 e-commerce
 services/web/Storage-service/src/uploads/*
+services/web/Storage-service/.env
