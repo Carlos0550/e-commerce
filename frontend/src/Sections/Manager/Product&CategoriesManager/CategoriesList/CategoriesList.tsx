@@ -4,6 +4,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { Button, Popover } from '@mantine/core'
 import "./CategoriesList.css"
 import EditCategoriesModal from './EditCategories/EditCategoriesModal'
+import { useState } from 'react'
 function CategoriesList() {
     const {
         categoriesHook:{
@@ -14,7 +15,12 @@ function CategoriesList() {
         }
     } = useAppContext()
     
-    
+    const [deletingCategory, setDeletingCategory] = useState<boolean>(false)
+    const handleDeleteCategory = async(category_id: string) => {
+        setDeletingCategory(true)
+        await deleteCategory(category_id)
+        setDeletingCategory(false)
+    }
     
   return (
     <div className='category-table-wrapper'>
@@ -39,7 +45,14 @@ function CategoriesList() {
                                 <Popover>
                                     <Popover.Dropdown>
                                         <p>Seguro que desea eliminar la categoria?</p>
-                                        <Button color='red' onClick={() => deleteCategory(cat.category_id)}>Eliminar</Button>
+                                        <Button 
+                                            color='red' 
+                                            onClick={() => handleDeleteCategory(cat.category_id)}
+                                            loading={deletingCategory}
+                                            disabled={deletingCategory}
+                                            >
+                                                Eliminar
+                                        </Button>
                                     </Popover.Dropdown>
                                     <Popover.Target>
                                         <Button color='red' variant='outline'><FaTrash/></Button>

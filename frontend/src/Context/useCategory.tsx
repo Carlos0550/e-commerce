@@ -81,7 +81,8 @@ function useCategory(loginData: LoginDataState) {
             })
             const responseData = await response.json()
             if (!response.ok) throw new Error(responseData.msg || "Error desconocido")
-            showNotification({
+                await getCategories()
+                showNotification({
                 color: 'green',
                 title: 'Categoría eliminada exitosamente',
                 message: '',
@@ -100,7 +101,7 @@ function useCategory(loginData: LoginDataState) {
             })
             return false
         }
-    }, [loginData])
+    }, [loginData, getCategories])
 
     const updateCategory = useCallback(async (category_id: string, category_name: string) => {
         const url = new URL(`${getServiceUrl("categories")}/update-category`);
