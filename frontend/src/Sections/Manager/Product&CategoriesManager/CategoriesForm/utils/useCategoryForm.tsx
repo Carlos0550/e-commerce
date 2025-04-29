@@ -1,11 +1,16 @@
 import { showNotification } from "@mantine/notifications";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../../../../Context/AppContext";
 
 function useCategoryForm() {
     const {
         categoriesHook: {
-            saveCategory
+            saveCategory,
+            categoryID,
+            handleCloseModalCategory,
+            updateCategory,
+            openedModalCategory,
+            categories
         }
     } = useAppContext()
     const categoryInputRef = useRef<HTMLInputElement>(null);
@@ -41,13 +46,32 @@ function useCategoryForm() {
         e.preventDefault()
         if (handleVerifyField()) {
             setSavingCategory(true)
-            const result = await saveCategory(categoryInputRef.current?.value || '')
+            const result = openedModalCategory 
+            ? await updateCategory(categoryID, categoryInputRef.current?.value || '')
+            : await saveCategory(categoryInputRef.current?.value || '')
             setTimeout(() => setSavingCategory(false), 1000)
             if (result && categoryInputRef.current && categoryInputRef.current.value !== undefined) {
                 categoryInputRef.current.value = '';
+                handleCloseModalCategory()
             }
         }
     }
+
+    useEffect(() => {
+        if (categoryID && openedModalCategory) {
+            const oldCategory = categories.find(cat => cat.category_id === categoryID)
+            if (!oldCategory) return
+            if (categoryInputRef.current) {
+                categoryInputRef.current.focus();
+                categoryInputRef.current.value = oldCategory.category_name;
+            }
+        }else{
+            if (categoryInputRef.current) {
+                categoryInputRef.current.focus();
+                categoryInputRef.current.value = '';
+            }
+        }
+    }, [categoryID, openedModalCategory, categoryInputRef])
     return {
         onSubmit,
         categoryInputRef,

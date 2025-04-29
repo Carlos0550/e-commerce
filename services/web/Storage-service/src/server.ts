@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 import pool from "./database"
 import path from "path";
 
-import uploadFilesRouter from "./routes/upload_files.routes";
+import ProductsRouter from "./routes/products.routes";
 import categoriesRouter from "./routes/categories.routes"
 
 (async() => {
@@ -28,9 +28,9 @@ app.get("/", (_req: Request, res: Response) => {
   res.send("SERVER ON");
 });
 
-app.use("/api", uploadFilesRouter)
+app.use("/api", ProductsRouter)
 app.use("/api/categories", categoriesRouter)
-app.use("/uploads", express.static(path.join(__dirname, "uploads")))
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")))
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

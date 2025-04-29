@@ -10,6 +10,7 @@ import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useEffect } from 'react';
 import useProductForm from './utils/useProductForm';
 import { FaTrash } from "react-icons/fa";
+import { useAppContext } from '../../../../Context/AppContext';
 function ProductForm() {
     const {
         handleUploadImages,
@@ -20,6 +21,12 @@ function ProductForm() {
         savingProduct,
         editor
     } = useProductForm()
+
+    const {
+        categoriesHook:{
+            categories
+        }
+    } = useAppContext()
 
     useEffect(() => {
         if (!editor) return;
@@ -102,13 +109,10 @@ function ProductForm() {
                             handleChangeValues({ target: { name: "product_category", value: val } } as React.ChangeEvent<HTMLInputElement>)
                         }
                         value={productForm.product_category}
-                        data={[
-                            { value: '1', label: 'Faciales' },
-                            { value: '2', label: 'Corporales' },
-                            { value: '3', label: 'Capilares' },
-                            { value: '4', label: 'Servicios' },
-                            { value: '5', label: 'Otros' }
-                        ]}
+                        data={categories.map((category) => ({
+                            value: category.category_id,
+                            label: category.category_name
+                        }))}
                         searchable
                         maxDropdownHeight={150}
                     />

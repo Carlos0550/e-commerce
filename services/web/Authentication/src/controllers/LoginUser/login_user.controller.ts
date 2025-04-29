@@ -26,8 +26,7 @@ export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Resp
         const {rows: [{count}]} = await client.query(LQueries[0],[
             user_email
         ])
-
-        if(count && count < 0){
+        if(count && parseInt(count) === 0){
             res.status(404).json({
                 msg: "No se encontro ninguna cuenta con el correo proporcionado"
             })
@@ -36,7 +35,6 @@ export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Resp
         }
 
         const {rows} = await client.query(LQueries[1],[user_email])
-
         const { manager_password, ...rest } = rows[0]
         if(!await comparePassword(user_password, manager_password)){
             res.status(400).json({

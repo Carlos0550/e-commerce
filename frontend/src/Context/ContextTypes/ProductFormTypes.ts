@@ -1,4 +1,4 @@
-export interface ProductImages{
+export interface ProductFormImages{
     image_name: string,
     originFileObj: File,
     image_id: string,
@@ -10,5 +10,5 @@ export interface ProductFormValues{
     product_price: string,
     product_stock: string,
     product_category: string,
-    product_images: ProductImages[],
+    product_images: ProductFormImages[],
 }

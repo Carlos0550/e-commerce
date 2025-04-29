@@ -5,6 +5,7 @@ import { getQueries } from "../../QueriesHandler";
 import path from "path";
 import pool from "../../database";
 
+const queriesFolder = path.join(__dirname, "./Queries")
 export const saveProduct: RequestHandler<{}, any, ProductFormValues, QueryWithUserId> = async (
   req,
   res
@@ -19,7 +20,7 @@ export const saveProduct: RequestHandler<{}, any, ProductFormValues, QueryWithUs
     product_category,
   } = req.body;
   console.log(product_category)
-  const queriesFolder = path.join(__dirname, "./Queries")
+  
   const { "saveProduct.sql": SPQueries } = getQueries(queriesFolder);
   let client;
 
@@ -63,3 +64,34 @@ export const saveProduct: RequestHandler<{}, any, ProductFormValues, QueryWithUs
     client && client.release()
   }
 };
+
+export const getProducts: RequestHandler<{},{},{},{}> = async (
+  req, 
+  res
+): Promise<void> => {
+  const queries = getQueries(queriesFolder);
+  const { "getProducts.sql": GPQueries } = queries;
+  if(!queries || !GPQueries){
+      res.status(500).json({
+          msg: "Error interno del servidor, por favor espere unos segundos e intente nuevamente."
+      })
+      return;
+  }
+
+  let client;    
+  try {
+      client = await pool.connect()
+      const response = await client.query(GPQueries[0])
+      res.status(200).json({
+          products: response.rows
+      })
+  } catch (error) {
+      console.log(error)
+      res.status(500).json({
+          msg: "Error interno del servidor, por favor espere unos segundos e intente nuevamente."
+      })
+  }finally{
+      client?.release()
+  } 
+}
+

@@ -1,10 +1,42 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ProductFormValues } from './ContextTypes/ProductFormTypes'
 import { getServiceUrl } from '../GlobalAPIs'
 import { LoginDataState } from './ContextTypes/AuthenticationTypes'
 import { showNotification } from '@mantine/notifications'
+import { Products } from './ContextTypes/ProductTypes'
 
 function useProducts(loginData: LoginDataState) {
+  const [products, setProducts] = useState<Products[]>([])
+
+  const getProducts = useCallback(async ()=>{
+    const url = new URL(`${getServiceUrl("products")}get-products`)
+    try {
+      const response = await fetch(url)
+      const responseD = await response.json()
+      if(response.status === 404){
+        setProducts([])
+        return false
+      }
+
+      if(!response.ok) throw new Error(responseD.msg || "Error desconocido")
+      setProducts(responseD.products)
+      return true
+    } catch (error) {
+        console.log(error)
+        showNotification({
+            color: 'red',
+            title: 'Error',
+            message: error instanceof Error ? error.message : 'Error desconocido',
+            autoClose: 5000,
+            position: 'top-right',
+        })
+
+        return false
+    }
+
+  },[])
+
+
   const saveProduct = useCallback(async(productValues: ProductFormValues): Promise<boolean> => {
     const formData = new FormData()
     const url = new URL(`${getServiceUrl("products")}create-product`)
@@ -52,10 +84,30 @@ function useProducts(loginData: LoginDataState) {
     }
   },[loginData])
 
+  const buildPath = useCallback((prPath: string) => {
+    return `${getServiceUrl("products")}${prPath}`
+  },[])
+
+
+  const alreadyGetted = useRef(false)
+  useEffect(()=>{
+    if(alreadyGetted.current) return
+    const timer = setTimeout(() => {
+      getProducts()
+      alreadyGetted.current = true
+    }, 100)
+
+    return () => clearTimeout(timer)
+  },[])
+
+  useEffect(()=>{
+    console.log(products)
+  },[products])
+
   return useMemo(() => ({
-    saveProduct
+    saveProduct, getProducts, products, buildPath
   }),[
-    saveProduct
+    saveProduct, getProducts, products
   ])
 }
 

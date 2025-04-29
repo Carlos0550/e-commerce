@@ -3,6 +3,7 @@ import { QueryWithUserId } from "../Types/QueryWithUserId";
 import { SaveCategoryBody } from "../controllers/Categories/Types/SaveCategoryTypes";
 
 import { saveCategory, getCategories, updateCategory } from "../controllers/Categories/categories.controller";
+import { UpdateCategoryQuery } from "../controllers/Categories/Types/UpdateCategoryTypes";
 const router = Router();
 
 router.post("/create-category", async(
@@ -23,13 +24,13 @@ router.post("/create-category", async(
 }, saveCategory)
 
 router.put("/update-category", async(
-    req: Request<{}, {}, SaveCategoryBody, QueryWithUserId>,
+    req: Request<{}, {}, SaveCategoryBody, UpdateCategoryQuery>,
     res: Response,
     next:NextFunction
 ): Promise<void> => {
-    const { user_id } = req.query
+    const { user_id, category_id } = req.query
     const { category_name }  = req.body
-    if(!user_id || !category_name){
+    if(!user_id || !category_name || !category_id){
         res.status(400).json({
             msg: "Todos los campos son requeridos"
         })
@@ -54,5 +55,22 @@ router.get("/get-categories", async(
 
     next()
 }, getCategories)
+
+router.delete("/delete-category", async(
+    req: Request<{}, {}, SaveCategoryBody, {category_id:string}>,
+    res: Response,
+    next:NextFunction
+): Promise<void> => {
+    const { category_id } = req.query
+    if(!category_id){
+        res.status(400).json({
+            msg: "Todos los campos son requeridos"
+        })
+        return
+    }
+
+    next()
+})
+
 
 export default router

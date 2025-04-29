@@ -4,6 +4,7 @@ import { Tabs } from '@mantine/core'
 import ProductForm from './ProductForm/ProductForm';
 import CategoryForm from './CategoriesForm/CategoryForm';
 import CategoriesList from './CategoriesList/CategoriesList';
+import ProductsList from './ProductsList/ProductsList';
 function Product_and_CategoriesManager() {
   const [activeTab, setActiveTab] = useState<string | null>('tab1');
   return (
@@ -24,7 +25,7 @@ function Product_and_CategoriesManager() {
           </Tabs.Panel>
 
           <Tabs.Panel value="tab2" pt="xs">
-            Lista de stock
+            <ProductsList/>
           </Tabs.Panel>
           <Tabs.Panel value="tab3" pt="xs">
             <CategoriesList/>

@@ -4,7 +4,7 @@ import { ProductFormValues } from "../Types/UploadFilesTypes";
 import { checkIsAdmin } from "../utils/CheckIsAdmin";
 import { rollbackFiles } from "../utils/RollbackFiles";
 import { QueryWithUserId } from "../Types/QueryWithUserId";
-import { saveProduct } from "../controllers/Products/upload_files.controller";
+import { getProducts, saveProduct } from "../controllers/Products/products.controller";
 
 const router = Router();
 
@@ -35,7 +35,6 @@ router.post("/create-product", uploads.array("product_images"), async (
             product_description,
             product_price,
             product_stock,
-            product_category,
         } = req.body;
 
         if (
@@ -57,5 +56,9 @@ router.post("/create-product", uploads.array("product_images"), async (
         });
     }
 }, saveProduct);
+
+router.get("/get-products", async(req:Request, res:Response, next:NextFunction): Promise<void> => {
+    next()
+}, getProducts)
 
 export default router;

@@ -5,6 +5,7 @@ import { getQueries } from "../../QueriesHandler";
 import path from "path";
 import { QueryWithUserId } from "../../Types/QueryWithUserId";
 import { SaveCategoryBody } from "./Types/SaveCategoryTypes";
+import { UpdateCategoryQuery } from "./Types/UpdateCategoryTypes";
 
 const queriesFolder = path.join(__dirname, "./Queries");
 
@@ -41,7 +42,7 @@ export const saveCategory = async (req:Request<{},{},SaveCategoryBody,QueryWithU
     }
 }
 
-export const updateCategory = async (req:Request<{},{},SaveCategoryBody,QueryWithUserId>, res:Response): Promise<void> => {
+export const updateCategory = async (req:Request<{},{},SaveCategoryBody,UpdateCategoryQuery>, res:Response): Promise<void> => {
     const queries = getQueries(queriesFolder);
     const { "updateCategory.sql": UCQueries } = queries;
     if(!queries || !UCQueries){
@@ -52,13 +53,14 @@ export const updateCategory = async (req:Request<{},{},SaveCategoryBody,QueryWit
     }    
 
     const { category_name } = req.body
-    const { user_id } = req.query
+    const { user_id, category_id } = req.query
     let client;
     try {
         client = await pool.connect()
         await client.query(UCQueries[0],[
             category_name,
-            user_id
+            user_id,
+            category_id
         ]);
 
         res.status(200).json({
@@ -74,7 +76,7 @@ export const updateCategory = async (req:Request<{},{},SaveCategoryBody,QueryWit
     }
 }
 
-export const deleteCategory = async (req:Request<{},{},SaveCategoryBody,QueryWithUserId>, res:Response): Promise<void> => {
+export const deleteCategory = async (req:Request<{},{},SaveCategoryBody,{category_id:string}>, res:Response): Promise<void> => {
     const queries = getQueries(queriesFolder);
     const { "deleteCategory.sql": DCQueries } = queries;
     if(!queries || !DCQueries){
@@ -84,12 +86,12 @@ export const deleteCategory = async (req:Request<{},{},SaveCategoryBody,QueryWit
         return;
     }
 
-    const { user_id } = req.query    
+    const { category_id } = req.query    
     let client;
     try {
         client = await pool.connect()
         await client.query(DCQueries[0],[
-            user_id
+            category_id
         ]);
 
         res.status(200).json({

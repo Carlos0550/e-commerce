@@ -3,9 +3,12 @@ import { getServiceUrl } from '../GlobalAPIs'
 import { LoginDataState } from './ContextTypes/AuthenticationTypes';
 import { showNotification } from '@mantine/notifications';
 import { Categories } from './ContextTypes/CategoriesTypes';
+import { useDisclosure } from '@mantine/hooks';
 
 function useCategory(loginData: LoginDataState) {
     const [categories, setCategories] = useState<Categories[]>([])
+    const [openedModalCategory, {open: openModalCategory, close: closeModalCategory}] = useDisclosure(false)
+    const [categoryID, setCategoryID] = useState("")
     const getCategories = useCallback(async () => {
 
         const url = new URL(`${getServiceUrl("categories")}/get-categories`);
@@ -103,13 +106,18 @@ function useCategory(loginData: LoginDataState) {
         const url = new URL(`${getServiceUrl("categories")}/update-category`);
         url.searchParams.append("user_id", loginData.user_id)
         url.searchParams.append("category_id", category_id)
-        url.searchParams.append("category_name", category_name)
+        
         try {
             const response = await fetch(url, {
-                method: "PUT"
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ category_name })
             })
             const responseData = await response.json()
             if (!response.ok) throw new Error(responseData.msg || "Error desconocido")
+            await getCategories()
             showNotification({
                 color: 'green',
                 title: 'Categoría actualizada exitosamente',
@@ -129,7 +137,7 @@ function useCategory(loginData: LoginDataState) {
             })
             return false
         }
-    }, [loginData])
+    }, [loginData, getCategories])
 
     const alreadyGettedCategories = useRef(false)
 
@@ -146,13 +154,25 @@ function useCategory(loginData: LoginDataState) {
 
     }, [loginData, getCategories])
 
-    useEffect(() => {
-        console.log(categories)
-    }, [categories])
+    const handleEditCategory = (category_id: string) => {
+        setCategoryID(category_id)
+        openModalCategory()
+    }
+
+    const handleCloseModalCategory = () => {
+        setCategoryID("")
+        closeModalCategory()
+    }
+
+
     return useMemo(() => ({
-        saveCategory, updateCategory, getCategories, deleteCategory, categories
+        saveCategory, updateCategory, getCategories, deleteCategory, categories,
+        openedModalCategory, closeModalCategory, openModalCategory, setCategoryID,
+        handleCloseModalCategory, handleEditCategory, categoryID
     }), [
-        saveCategory, updateCategory, getCategories, deleteCategory, categories
+        saveCategory, updateCategory, getCategories, deleteCategory, categories,
+        openedModalCategory, closeModalCategory, openModalCategory, setCategoryID,
+        categoryID, handleCloseModalCategory, handleEditCategory
     ])
 }
 
