@@ -10,8 +10,6 @@ if (!fs.existsSync(uploadPath)) {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log("Saving files to: ", uploadPath);
-
     cb(null, uploadPath); 
   },
   filename: function (req, file, cb) {
