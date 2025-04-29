@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, Router } from "express";
 import { QueryWithUserId } from "../Types/QueryWithUserId";
 import { SaveCategoryBody } from "../controllers/Categories/Types/SaveCategoryTypes";
 
-import { saveCategory, getCategories, updateCategory } from "../controllers/Categories/categories.controller";
+import { saveCategory, getCategories, updateCategory, deleteCategory } from "../controllers/Categories/categories.controller";
 import { UpdateCategoryQuery } from "../controllers/Categories/Types/UpdateCategoryTypes";
 const router = Router();
 
@@ -70,7 +70,7 @@ router.delete("/delete-category", async(
     }
 
     next()
-})
+}, deleteCategory)
 
 
 export default router
