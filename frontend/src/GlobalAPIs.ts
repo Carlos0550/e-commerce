@@ -22,6 +22,11 @@ const services: Record<string, ServiceConfig> = {
     port: "5001",
     path: "/api/categories",
     prodUrl: "https://products-service-development.up.railway.app"
+  },
+  ssr:{
+    port:"5002",
+    path:"/api/",
+    prodUrl: "https://ssr-service-development.up.railway.app"
   }
 }
 
