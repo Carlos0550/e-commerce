@@ -7,7 +7,6 @@ function LoginForm() {
     handleChange,
     onFinish   ,
     errores,
-    handleCheckboxChange,
     logginAccount
   } = useLoginForm()
   return (

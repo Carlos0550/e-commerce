@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { LoginDataState } from './ContextTypes/AuthenticationTypes'
 import { RegisterFormValues } from './ContextTypes/RegisterUserForm';
 import { getServiceUrl } from '../GlobalAPIs';
@@ -66,6 +66,13 @@ function UseAuthentication() {
                 user_name: responseData.user.manager_name,
                 user_id: responseData.user.manager_id
             })
+
+            const loginData = {
+                user_email: responseData.user.manager_email,
+                user_name: responseData.user.manager_name,
+                user_id: responseData.user.manager_id
+            }
+            localStorage.setItem("restored_login_data", JSON.stringify(loginData))
             showNotification({
                 color: 'green',
                 title: responseData.msg || "Bienvenido nuevamente!",
@@ -74,7 +81,7 @@ function UseAuthentication() {
                 position: 'top-right',
             })
 
-            navigate("/admin-dashboard")
+            navigate("/admin-dashboard/administration")
             return true
         } catch (error) {
             console.log(error)
@@ -88,6 +95,34 @@ function UseAuthentication() {
             return false
         }
     }, [])
+
+    const alreadyLoggedIn = useRef(false)
+    useEffect(()=>{
+        if(alreadyLoggedIn.current) return
+        alreadyLoggedIn.current = true
+        const restoredLoginData = localStorage.getItem("restored_login_data")
+        if(restoredLoginData){
+            const loginData = JSON.parse(restoredLoginData)
+            setLoginData({
+                user_email: loginData.user_email,
+                user_name: loginData.user_name,
+                user_id: loginData.user_id
+            })
+
+            setTimeout(() => {
+                showNotification({
+                    color: 'green',
+                    title: `Bienvenido nuevamente, ${loginData.user_name}!`,
+                    message: '',
+                    autoClose: 2500,
+                    position: 'top-right',
+                })
+            }, 500);
+
+            return;
+        }
+    },[])
+
 
     useEffect(() => {
         const isLoggedIn = loginData && loginData.user_email !== "";
@@ -103,7 +138,7 @@ function UseAuthentication() {
                 position: 'top-right',
               });
             }
-          }, 100);
+          }, 500);
         return () => clearTimeout(timer);
         
     }, [location, loginData])

@@ -1,33 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./LoginManager.css"
 import LoginForm from './Components/LoginForm/LoginForm';
 import RegisterForm from './Components/RegisterForm/RegisterForm';
-import { Button } from '@mantine/core';
+import { Button, Flex, Space } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../Context/AppContext';
 function LoginManager() {
     const [showLogin, setShowLogin] = useState(true);
+    const {
+        AuthenticationHook: {
+            loginData
+        }
+    } = useAppContext()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (loginData && loginData.user_id) navigate("/admin-dashboard/administration")
+        return
+    }, [loginData])
     return (
         <div className='login-manager-container'>
             <div className='login-manager__wrapper'>
-            <div className='login-manager-node'>
-                {showLogin && <LoginForm />}
-                {!showLogin && <RegisterForm />}
-            </div>
-            
-            <div className='toggle-loginmanager-container'>
-                {showLogin
-                    ? (
-                        <React.Fragment>
-                            <p>¿No tiene una cuenta?</p>
-                            <Button c={"white"} color='dark' onClick={() => setShowLogin(false)}>Registrarse</Button>
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            <p>¿Ya tiene una cuenta?</p>
-                            <Button c={"white"} color='dark' onClick={() => setShowLogin(true)}>Iniciar Sesión</Button>
-                        </React.Fragment>
-                    )
-                }
-            </div>
+                <div className='login-manager-node'>
+                    {showLogin && <LoginForm />}
+                    {!showLogin && <RegisterForm />}
+                </div>
+
+                <div className='toggle-loginmanager-container'>
+                    {showLogin
+                        ? (
+                            <React.Fragment>
+                                <Flex gap={10} justify={"space-between"} direction={"column"}>
+                                    <Button color="cyan" onClick={() => navigate("/")}>Volver al inicio</Button>
+
+                                    <Space>
+                                        <p>¿No tiene una cuenta?</p>
+                                        <Button c={"white"} color='dark' onClick={() => setShowLogin(false)}>Registrarse</Button>
+                                    </Space>
+                                </Flex>
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                <Flex justify={"space-between"} gap={10} direction={"column"}>
+                                    <Button color="cyan" onClick={() => navigate("/")}>Volver al inicio</Button>
+
+                                    <Space>
+                                        <p>¿Ya tiene una cuenta?</p>
+                                        <Button c={"white"} color='dark' onClick={() => setShowLogin(true)}>Iniciar Sesión</Button>
+                                    </Space>
+                                </Flex>
+                            </React.Fragment>
+                        )
+                    }
+                </div>
             </div>
         </div>
     )
