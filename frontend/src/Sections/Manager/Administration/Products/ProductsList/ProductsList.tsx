@@ -1,8 +1,7 @@
-import React from 'react'
 import "./ProductsList.css"
 import { Button, Popover } from '@mantine/core'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import { useAppContext } from '../../../../Context/AppContext'
+import { useAppContext } from '../../../../../Context/AppContext'
 function ProductsList() {
     const {
         productsHook:{

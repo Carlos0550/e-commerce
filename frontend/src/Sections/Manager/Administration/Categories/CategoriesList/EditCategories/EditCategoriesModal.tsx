@@ -1,7 +1,7 @@
 import { Modal } from '@mantine/core'
 
 import CategoryForm from '../../CategoriesForm/CategoryForm'
-import { useAppContext } from '../../../../../Context/AppContext'
+import { useAppContext } from '../../../../../../Context/AppContext'
 
 interface Props{
     opened: boolean,

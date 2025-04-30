@@ -10,7 +10,7 @@ import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useEffect } from 'react';
 import useProductForm from './utils/useProductForm';
 import { FaTrash } from "react-icons/fa";
-import { useAppContext } from '../../../../Context/AppContext';
+import { useAppContext } from '../../../../../Context/AppContext';
 function ProductForm() {
     const {
         handleUploadImages,

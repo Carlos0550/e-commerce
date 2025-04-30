@@ -1,5 +1,5 @@
-import { useAppContext } from '../../../../Context/AppContext'
-import { Categories } from '../../../../Context/ContextTypes/CategoriesTypes'
+import { useAppContext } from '../../../../../Context/AppContext'
+import { Categories } from '../../../../../Context/ContextTypes/CategoriesTypes'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { Button, Popover } from '@mantine/core'
 import "./CategoriesList.css"
