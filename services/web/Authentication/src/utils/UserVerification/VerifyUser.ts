@@ -1,7 +1,5 @@
 import pool from "../../database"
-import path from "path"
 
-import { getQueries } from "../../QueriesHandler"
 import { RequestHandler } from "express"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
@@ -10,7 +8,6 @@ import timezone from "dayjs/plugin/timezone"
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const queriesFolder = path.join(__dirname, "./Queries")
 
 export const verifyUser: RequestHandler<{},{},{},{user_id: string}> = async (req, res, next): Promise<void> => {
     const {user_id} = req.query
@@ -19,16 +16,11 @@ export const verifyUser: RequestHandler<{},{},{},{user_id: string}> = async (req
         res.status(400).json({msg: "No fue posible verificar su cuenta: El servidor no recibió el ID de usuario."})
         return
     }
-    const queries = getQueries(queriesFolder);
-    const { "verifyUser.sql": VUQueries } = queries; if(!queries || !VUQueries){
-        res.status(500).json({msg: "Error interno del servidor, por favor espere unos segundos e intente nuevamente."})
-        return 
-    }
-
+    
     let client;
     try {
         client = await pool.connect()
-        const response = await client.query(VUQueries[0], [user_id])
+        const response = await client.query("SELECT * FROM managers WHERE manager_id = $1;", [user_id])
 
         if(response.rowCount === 0){
             res.status(404).json({
