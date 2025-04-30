@@ -35,7 +35,7 @@ router.post("/login-user", (req: Request<{}, {}, CreateAccountBody, {}>, res: Re
 
 
 const handler = (req: Request, res: Response): void => {
-    const user = (req as CustomRequest).user;
+    const user = (req as unknown as CustomRequest).user;
     res.status(200).json({ msg: "Cuenta verificada", user });
 };
 router.get("/verify-user", verifyUser, handler);
