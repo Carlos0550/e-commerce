@@ -1,0 +1,28 @@
+.product-manager-container{
+    margin-top: 1rem;
+    padding: .5rem;
+    min-height: 100vh;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.product-manager-title{
+    font-size: 1.5rem;
+    align-self: flex-start;
+}
+
+.product-manager-actions{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.category-form-input{
+    text-align: start;
+}
+
+.category-form-button{
+    align-self: flex-start;
+}
