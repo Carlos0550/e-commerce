@@ -66,13 +66,7 @@ function UseAuthentication() {
                 user_name: responseData.user.manager_name,
                 user_id: responseData.user.manager_id
             })
-
-            const loginData = {
-                user_email: responseData.user.manager_email,
-                user_name: responseData.user.manager_name,
-                user_id: responseData.user.manager_id
-            }
-            localStorage.setItem("restored_login_data", JSON.stringify(loginData))
+            localStorage.setItem("restored_login_data", JSON.stringify({ user_id: responseData.user.manager_id }))
             showNotification({
                 color: 'green',
                 title: responseData.msg || "Bienvenido nuevamente!",
@@ -96,57 +90,99 @@ function UseAuthentication() {
         }
     }, [])
 
-    const alreadyLoggedIn = useRef(false)
-    useEffect(()=>{
-        if(alreadyLoggedIn.current) return
-        alreadyLoggedIn.current = true
-        const restoredLoginData = localStorage.getItem("restored_login_data")
-        if(restoredLoginData){
-            const loginData = JSON.parse(restoredLoginData)
-            setLoginData({
-                user_email: loginData.user_email,
-                user_name: loginData.user_name,
-                user_id: loginData.user_id
-            })
+    const closeSession = useCallback(() => {
+        navigate("/authentication")
+        setLoginData({
+            user_email: "",
+            user_name: "",
+            user_id: ""
+        })
 
-            setTimeout(() => {
-                showNotification({
-                    color: 'green',
-                    title: `Bienvenido nuevamente, ${loginData.user_name}!`,
-                    message: '',
-                    autoClose: 2500,
-                    position: 'top-right',
-                })
-            }, 500);
+        localStorage.removeItem("restored_login_data");
+        return
+    }, [setLoginData])
 
-            return;
-        }
-    },[])
-
-
-    useEffect(() => {
-        const isLoggedIn = loginData && loginData.user_email !== "";
-
-        const timer = setTimeout(() => {
-            if (location.pathname.includes("admin") && !isLoggedIn) {
-              navigate("/");
-              showNotification({
+    const verifyUser = useCallback(async () => {
+        const userData = localStorage.getItem("restored_login_data")
+        if (location.pathname.includes("admin") && !userData) {
+            navigate("/");
+            showNotification({
                 color: 'red',
                 title: 'Error',
                 message: "Debes iniciar sesión para acceder a esta página.",
                 autoClose: 5000,
                 position: 'top-right',
-              });
+            });
+
+            return false
+        }
+        const user_id = userData ? JSON.parse(userData) : ""
+        if (!user_id) return false;
+
+        const url = new URL(`${getServiceUrl("authentication")}verify-user`)
+        url.searchParams.append("user_id", user_id.user_id)
+        try {
+            const response = await fetch(url)
+            const responseData = await response.json()
+            if (response.status === 401) {
+                closeSession()
+                showNotification({
+                    color: 'red',
+                    title: responseData.msg || "Error desconocido",
+                    message: "Por favor, inicie sesión nuevamente.",
+                    autoClose: 4000,
+                    position: 'top-right',
+                })
+                return false
             }
-          }, 500);
-        return () => clearTimeout(timer);
-        
-    }, [location, loginData])
+            if (!response.ok) throw new Error(responseData.msg || "Error desconocido")
+            const user = responseData.user
+            setLoginData({
+                user_email: user.manager_email,
+                user_name: user.manager_name,
+                user_id: user.manager_id
+            })
+            return true
+        } catch (error) {
+            console.log(error)
+
+            closeSession()
+            showNotification({
+                color: 'red',
+                title: 'Error',
+                message: error instanceof Error ? error.message : "Error desconocido",
+                autoClose: 5000,
+                position: 'top-right',
+            })
+            return false
+        }
+    }, [setLoginData, location])
+
+
+    const isVerifyingRef = useRef(false)
+
+    useEffect(() => {
+        const timer = setInterval(async () => {
+            if (isVerifyingRef.current) return
+            isVerifyingRef.current = true
+            await verifyUser()
+            isVerifyingRef.current = false
+        }, 15000)
+
+        return () => clearInterval(timer)
+    }, [verifyUser])
+
+    const alreadyFetched = useRef(false)
+    useEffect(() => {
+        if (alreadyFetched.current) return
+        alreadyFetched.current = true
+        verifyUser()
+    }, [])
 
     return useMemo(() => ({
-        loginData, setLoginData, createUserAccount, loginUser
+        loginData, setLoginData, createUserAccount, loginUser, closeSession, verifyUser
     }), [
-        loginData, setLoginData, createUserAccount, loginUser
+        loginData, setLoginData, createUserAccount, loginUser, closeSession, verifyUser
     ])
 }
 

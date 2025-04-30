@@ -2,7 +2,12 @@ import { Request, Response } from "express"
 import { CreateAccountBody } from "../../Types/CreateAccountTypes"
 import { getQueries } from "../../QueriesHandler"
 import path from "path"
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
 
+dayjs.extend(utc)
+dayjs.extend(timezone)
 import pool from "../../database"
 import { comparePassword } from "../../utils/PasswordsUtils"
 export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Response): Promise<void> => {
@@ -33,7 +38,7 @@ export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Resp
 
             return;
         }
-
+        
         const {rows} = await client.query(LQueries[1],[user_email])
         const { manager_password, ...rest } = rows[0]
         if(!await comparePassword(user_password, manager_password)){
@@ -43,6 +48,10 @@ export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Resp
 
             return;
         }else{
+            console.log(LQueries[2])
+            const today = dayjs().format("YYYY-MM-DD HH:mm:ss")
+            console.log("today: ", today)
+            await client.query(LQueries[2],[today, user_email])
             res.status(200).json({
                 msg: "Bienvenido nuevamente a Cinnamon",
                 user: rest

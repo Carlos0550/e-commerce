@@ -16,10 +16,10 @@ export const useAppContext = () => {
 
 export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
     const AuthenticationHook = UseAuthentication()
-    const { loginData } = AuthenticationHook
+    const { loginData, verifyUser } = AuthenticationHook
 
-    const productsHook = useProducts(loginData)
-    const categoriesHook = useCategory(loginData)
+    const productsHook = useProducts(loginData, verifyUser)
+    const categoriesHook = useCategory(loginData, verifyUser)
     
     const AppContextValues = useMemo(()=> ({
         AuthenticationHook,

@@ -5,7 +5,8 @@ import "./Layout.css"
 function Layout({children}: {children: React.ReactNode}) {
     const {
         AuthenticationHook: {
-            loginData
+            loginData,
+            closeSession
         }
     } = useAppContext()
 
@@ -26,7 +27,7 @@ function Layout({children}: {children: React.ReactNode}) {
                         <h1>Hola, {loginData && loginData?.user_name.split(" ")[0]} 👋</h1>
                         <Button
                             color="red"
-
+                            onClick={()=> closeSession()}
                         >
                             Cerrar sesión
                         </Button>

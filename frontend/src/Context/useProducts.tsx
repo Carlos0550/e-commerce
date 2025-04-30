@@ -5,10 +5,14 @@ import { LoginDataState } from './ContextTypes/AuthenticationTypes'
 import { showNotification } from '@mantine/notifications'
 import { Products } from './ContextTypes/ProductTypes'
 
-function useProducts(loginData: LoginDataState) {
+function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolean>) {
   const [products, setProducts] = useState<Products[]>([])
 
   const getProducts = useCallback(async () => {
+    if(!loginData.user_id){
+      setProducts([])
+      return false
+    }
     const url = new URL(`${getServiceUrl("products")}get-products`)
     try {
       const response = await fetch(url)
@@ -34,7 +38,7 @@ function useProducts(loginData: LoginDataState) {
       return false
     }
 
-  }, [])
+  }, [loginData])
 
 
   const saveProduct = useCallback(async (productValues: ProductFormValues): Promise<boolean> => {
@@ -91,18 +95,14 @@ function useProducts(loginData: LoginDataState) {
 
   const alreadyGetted = useRef(false)
   useEffect(() => {
-    if (alreadyGetted.current) return
+    if (loginData && loginData.user_id && alreadyGetted.current) return
     const timer = setTimeout(() => {
       getProducts()
       alreadyGetted.current = true
     }, 100)
 
     return () => clearTimeout(timer)
-  }, [])
-
-  useEffect(() => {
-    console.log(products)
-  }, [products])
+  }, [loginData])
 
   return useMemo(() => ({
     saveProduct, getProducts, products, buildPath

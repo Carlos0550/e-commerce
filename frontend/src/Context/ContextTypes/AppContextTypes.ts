@@ -9,7 +9,8 @@ export interface ContextAuthentication{
     setLoginData: React.Dispatch<React.SetStateAction<LoginDataState>>
     createUserAccount: (formValues: RegisterFormValues) => Promise<boolean>
     loginUser: (formValues: RegisterFormValues) => Promise<boolean>
-
+    closeSession: () => void,
+    verifyUser: () => Promise<boolean>
 }
 
 export interface ProductsHookInterface{

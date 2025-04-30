@@ -5,7 +5,7 @@ import { showNotification } from '@mantine/notifications';
 import { Categories } from './ContextTypes/CategoriesTypes';
 import { useDisclosure } from '@mantine/hooks';
 
-function useCategory(loginData: LoginDataState) {
+function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolean>) {
     const [categories, setCategories] = useState<Categories[]>([])
     const [openedModalCategory, {open: openModalCategory, close: closeModalCategory}] = useDisclosure(false)
     const [categoryID, setCategoryID] = useState("")
