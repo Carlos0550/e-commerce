@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ProductFormValues } from "../../../../../../Context/ContextTypes/ProductFormTypes"
 import { v4 as uuid } from "uuid"
 import { showNotification } from "@mantine/notifications";
@@ -8,7 +8,16 @@ import { useEditor } from "@tiptap/react";
 function useProductForm() {
   const {
     productsHook: {
-      saveProduct
+      saveProduct,
+      productModalInfo:{
+        actionType,
+        product_id
+      },
+      getProductImages,
+      products,
+      buildPath,
+      setProductModalInfo,
+      closeProductsModal
     }
   } = useAppContext()
   const [productForm, setProductForm] = useState<ProductFormValues>({
@@ -19,17 +28,22 @@ function useProductForm() {
     product_price: "",
     product_stock: "",
   })
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([])
 
   const editor = useEditor({
     extensions: [StarterKit],
     content: productForm.product_description,
   });
 
-  const removeImage = (image_id: string) => {
+  const removeImage = (image_id: string, path?: string) => {
     setProductForm((prev) => ({
       ...prev,
       product_images: prev.product_images.filter(img => img.image_id !== image_id)
     }));
+
+    if(actionType === "edit"){
+      setImagesToDelete(prev => [...prev, path!])
+    }
   };
   const handleUploadImages = (files: File[]) => {
     if (productForm.product_images.length + files.length > 6) {
@@ -182,6 +196,9 @@ function useProductForm() {
       product_images: []
     })
     editor?.commands.clearContent();
+    setProductModalInfo({actionType: "create", product_id: ""})
+    closeProductsModal()
+    setImagesToDelete([])
     return;
   }
 
@@ -190,11 +207,44 @@ function useProductForm() {
     e.preventDefault()
     if (validateForm()) {
       setSavingProduct(true)
-      const result = await saveProduct(productForm)
+      const result = await saveProduct(productForm, imagesToDelete)
       setTimeout(() => setSavingProduct(false), 1000)
       if (result) handleClearFields()
     }
   }
+
+  const [fetchingImages, setFetchingImages] = useState(false)
+  const handleEditProduct = async () => {
+    setFetchingImages(true)
+    const images = await getProductImages(product_id)
+    setTimeout(() => setFetchingImages(false), 1000)
+    const productImagesCast = images.map((i) => ({
+      image_id: uuid(),
+      image_name: `${i.name}.${i.type.split("/")[1]}`,
+      image_url: buildPath(i.path),
+      isNew: false,
+    }));
+
+    const productData = products.find((p) => p.product_id === product_id) 
+    if (productData) {
+      setProductForm({
+        product_name: productData.product_name,
+        product_description: productData.product_description,
+        product_price: productData.product_price,
+        product_stock: productData.product_stock,
+        product_category: productData.product_category,
+        product_images: productImagesCast
+      })
+      editor?.commands.setContent(productData.product_description)
+    }
+  }
+
+  useEffect(()=>{
+    if(actionType === "edit" && product_id){
+      handleEditProduct()
+    }
+      
+  },[product_id, actionType])
 
   return {
     handleUploadImages,
@@ -203,7 +253,8 @@ function useProductForm() {
     removeImage,
     onFinish,
     savingProduct,
-    editor
+    editor,
+    fetchingImages
   }
 }
 

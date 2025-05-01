@@ -1,6 +1,7 @@
 export interface ProductFormImages{
     image_name: string,
-    originFileObj: File,
+    originFileObj?: File,
+    image_url?: string,
     image_id: string,
     isNew: boolean
 }

@@ -4,7 +4,10 @@ import { ProductFormValues } from "../Types/UploadFilesTypes";
 import { checkIsAdmin } from "../utils/CheckIsAdmin";
 import { rollbackFiles } from "../utils/RollbackFiles";
 import { QueryWithUserId } from "../Types/QueryWithUserId";
-import { getProducts, saveProduct } from "../controllers/Products/products.controller";
+import { EditProduct, getProductImages, getProducts, saveProduct } from "../controllers/Products/products.controller";
+import { RequestHandler } from "express-serve-static-core";
+import { EditProductRouteInterface } from "../Types/UpdateProductsBody";
+import { verifyUser } from "../utils/VerifyUser";
 
 const router = Router();
 
@@ -57,8 +60,59 @@ router.post("/create-product", uploads.array("product_images"), async (
     }
 }, saveProduct);
 
-router.get("/get-products", async(req:Request, res:Response, next:NextFunction): Promise<void> => {
+router.get("/get-products", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     next()
 }, getProducts)
 
+const validateProductIdQuery: RequestHandler<{}, {}, {}, { product_id: string }> = (
+    req,
+    res,
+    next
+) => {
+    const { product_id } = req.query;
+
+    if (!product_id) {
+        res.status(400).json({
+            msg: "El servidor no recibió el ID del producto.",
+        });
+        return;
+    }
+
+    next();
+};
+router.get("/get-product-images", validateProductIdQuery, getProductImages);
+
+const EditProductRoute:RequestHandler<{},{},EditProductRouteInterface,{user_id:string, product_id:string}> = async(
+    req,
+    res,
+    next
+): Promise<void> => {
+    const { product_id } = req.query
+
+    //const files = req.files as Express.Multer.File[]; //Nuevos archivos es opcional
+    //Categoria e Imagenes a eliminar tambien es opcional
+    const {
+        product_name,
+        product_description,
+        product_price,
+        product_stock,
+    } = req.body
+
+    if(!product_id){
+        res.status(400).json({
+            msg: "El servidor no recibió el ID del producto."
+        })
+        return;
+    }
+
+    if(!product_name || !product_description || !product_price || !product_stock){
+        res.status(400).json({
+            msg: 'Verifique que los campos con "*" no esten vacíos'
+        })
+        return;
+    }
+
+    next()
+}
+router.put("/edit-product",verifyUser, uploads.array("product_images"), EditProductRoute, EditProduct)
 export default router;

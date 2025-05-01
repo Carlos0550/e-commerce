@@ -1,7 +1,7 @@
 import { LoginDataState } from "./AuthenticationTypes";
 import { Categories } from "./CategoriesTypes";
 import { ProductFormValues } from "./ProductFormTypes";
-import { Products } from "./ProductTypes";
+import { ProductImages, ProductModalInfo, Products } from "./ProductTypes";
 import { RegisterFormValues } from "./RegisterUserForm";
 
 export interface ContextAuthentication{
@@ -14,10 +14,16 @@ export interface ContextAuthentication{
 }
 
 export interface ProductsHookInterface{
-    saveProduct: (productValues: ProductFormValues) => Promise<boolean>,
+    saveProduct: (productValues: ProductFormValues, imagesToDelete: string[]) => Promise<boolean>,
     getProducts: () => Promise<boolean>, 
     products: Products[],
-    buildPath: (url: string) => string
+    buildPath: (url: string) => string,
+    getProductImages: (product_id: string) => Promise<ProductImages[]>,
+    openedProductsModal: boolean, 
+    openProductsModal: () => void, 
+    closeProductsModal: () => void,
+    productModalInfo: ProductModalInfo, 
+    setProductModalInfo: React.Dispatch<React.SetStateAction<ProductModalInfo>>
 }
 
 export interface CategoriesHookInterface{

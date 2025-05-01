@@ -1,19 +1,35 @@
 import { Modal } from '@mantine/core'
 import ProductForm from '../ProductForm/ProductForm'
+import { useAppContext } from '../../../../../Context/AppContext'
 
-interface Props{
-    opened: boolean,
-    onClose: () => void
-}
-function ProductsModal({opened, onClose}: Props) {
+function ProductsModal() {
+  const {
+    productsHook:{
+        openedProductsModal: opened,
+        closeProductsModal: onClose,
+        productModalInfo:{
+            actionType
+        },
+        setProductModalInfo
+    }
+  } = useAppContext()
+
+  const handleCloseModal = () =>{
+    setProductModalInfo({
+      actionType: "create",
+      product_id: ""
+    })
+
+    onClose()
+  }
   return (
     <Modal
         opened={opened}
-        onClose={onClose}
+        onClose={()=> handleCloseModal()}
         size="xl"
         fullScreen
         centered
-        title="Agregar Producto"
+        title={actionType === "edit" ? "Editar Producto" : "Agregar Producto"}
     >
         <ProductForm/>
     </Modal>

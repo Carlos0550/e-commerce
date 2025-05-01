@@ -1,4 +1,4 @@
-import { Button, Input, Select } from '@mantine/core'
+import { Button, Flex, Input, Select, Skeleton } from '@mantine/core'
 import "./ProductForm.css"
 import '@mantine/tiptap/styles.css';
 import '@mantine/dropzone/styles.css';
@@ -7,7 +7,7 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { Group, Text } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import useProductForm from './utils/useProductForm';
 import { FaTrash } from "react-icons/fa";
 import { useAppContext } from '../../../../../Context/AppContext';
@@ -19,11 +19,12 @@ function ProductForm() {
         removeImage,
         onFinish,
         savingProduct,
-        editor
+        editor,
+        fetchingImages
     } = useProductForm()
 
     const {
-        categoriesHook:{
+        categoriesHook: {
             categories
         }
     } = useAppContext()
@@ -89,13 +90,17 @@ function ProductForm() {
                     required
                     className='product-wrapper-input'
                 >
-                    <Input
+                    {fetchingImages ? (
+                        <Skeleton mt={5} animate height={20} width={500} radius="xs"/>
+                    ) : (
+                        <Input
                         name="product_name"
                         type='text'
                         onChange={handleChangeValues}
                         value={productForm.product_name}
 
                     />
+                    )}
                 </Input.Wrapper>
 
                 <Input.Wrapper
@@ -103,7 +108,10 @@ function ProductForm() {
                     description="Seleccioná de tu lista de categorías"
                     className='product-wrapper-input'
                 >
-                    <Select
+                    {fetchingImages ? (
+                        <Skeleton mt={5} animate height={30} width={500} radius="xs"/>
+                    ) : (
+                        <Select
                         name="product_category"
                         onChange={(val) =>
                             handleChangeValues({ target: { name: "product_category", value: val } } as React.ChangeEvent<HTMLInputElement>)
@@ -116,6 +124,7 @@ function ProductForm() {
                         searchable
                         maxDropdownHeight={150}
                     />
+                    )}
                 </Input.Wrapper>
 
                 <Input.Wrapper
@@ -123,11 +132,15 @@ function ProductForm() {
                     required
                     className='product-wrapper-input'
                 >
-                    <Input name="product_price"
-                        type='number'
-                        onChange={handleChangeValues}
-                        value={productForm.product_price}
-                    />
+                    {fetchingImages ? (
+                        <Skeleton mt={5} animate height={20} width={500} radius="xs"/>
+                    ) : (
+                        <Input name="product_price"
+                            type='number'
+                            onChange={handleChangeValues}
+                            value={productForm.product_price}
+                        />
+                    )}
                 </Input.Wrapper>
 
                 <Input.Wrapper
@@ -136,11 +149,17 @@ function ProductForm() {
                     required
                     className='product-wrapper-input'
                 >
-                    <Input name="product_stock"
-                        type='number'
-                        onChange={handleChangeValues}
-                        value={productForm.product_stock}
-                    />
+                    {fetchingImages ? (
+                        <Skeleton mt={5} animate height={20} width={500} radius="xs"/>
+                    ) : (
+                        <React.Fragment>
+                            <Input name="product_stock"
+                                type='number'
+                                onChange={handleChangeValues}
+                                value={productForm.product_stock}
+                            />
+                        </React.Fragment>
+                    )}
                 </Input.Wrapper>
 
                 <Input.Wrapper
@@ -148,7 +167,14 @@ function ProductForm() {
                     label="Descripción del producto"
                     description="Ingresá una breve descripción de tu producto"
                 >
-                    <RichTextEditor editor={editor} className='product-editor'>
+                    {fetchingImages ? (
+                        <Flex align="flex-start" direction={"column"} justify="center" style={{ width: '100%', height: '100%' }}>
+                            <Skeleton mt={5} animate height={20} width={500} radius="xs"/>
+                            <Skeleton mt={5} animate height={100} width={500} radius="xs"/>
+                        </Flex>
+                    ) : (
+                    <React.Fragment>
+                        <RichTextEditor editor={editor} className='product-editor'>
                         <RichTextEditor.Toolbar >
                             <RichTextEditor.ControlsGroup>
                                 <RichTextEditor.Bold />
@@ -195,36 +221,58 @@ function ProductForm() {
 
                         <RichTextEditor.Content />
                     </RichTextEditor>
+                    </React.Fragment>)}
                 </Input.Wrapper>
 
                 <Input.Wrapper
                     className='product-wrapper-input'
                     label="Imagen/es del producto"
                     description="Ingresá las imagenes de tu producto (la primera será la portada)"
-                >
-                    <DropzoneInput />
-                    <div className="image-preview-wrapper">
-                        {productForm.product_images.map((img) => (
-                            <div key={img.image_id} className="image-preview-item">
-                                <img
-                                    src={URL.createObjectURL(img.originFileObj)}
-                                    alt={img.image_name}
-                                    width={100}
-                                    className="preview-thumbnail"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => removeImage(img.image_id)}
-                                    className="remove-image-button"
-                                >
-                                    <FaTrash />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
 
+                >
+                    {fetchingImages ? (
+                        <Flex gap="md" align="center" justify="center">
+                            <Skeleton mt={5} animate height={100} width={100} radius="md"/>
+                            <Skeleton mt={5} animate height={100} width={100} radius="md"/>
+                            <Skeleton mt={5} animate height={100} width={100} radius="md"/>
+                            <Skeleton mt={5} animate height={100} width={100} radius="md"/>
+                            <Skeleton mt={5} animate height={100} width={100} radius="md"/>
+                        </Flex>
+                    ) : (
+                        <React.Fragment>
+                            <DropzoneInput />
+                            <div className="image-preview-wrapper">
+                                {productForm.product_images.map((img) => (
+                                    <div key={img.image_id} className="image-preview-item">
+                                        <img
+                                            src={img.originFileObj ? URL.createObjectURL(img.originFileObj) : img.image_url}
+                                            alt={img.image_name}
+                                            width={100}
+                                            className="preview-thumbnail"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(img.image_id, img.image_url)}
+                                            className="remove-image-button"
+                                        >
+                                            <FaTrash />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </React.Fragment>
+                    )}
                 </Input.Wrapper>
-            <Button className='product-form-button' type='submit' color='dark' c={"white"} disabled={savingProduct} loading={savingProduct}>Guardar Producto</Button>
+                <Button 
+                    className='product-form-button' 
+                    type='submit' 
+                    color='dark' 
+                    c={"white"} 
+                    mb={10}
+                    disabled={savingProduct || fetchingImages} 
+                    loading={savingProduct}>
+                        Guardar Producto
+                    </Button>
             </div>
 
         </form>

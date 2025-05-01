@@ -11,5 +11,11 @@ export interface Products{
     product_price: string,
     product_stock: string,
     product_category: string,
-    product_images: ProductImages[],
+    pr_category_name: string
+    product_images: ProductImages,
 }
+
+export interface ProductModalInfo{
+    actionType: "create" | "edit",
+    product_id: string
+  }

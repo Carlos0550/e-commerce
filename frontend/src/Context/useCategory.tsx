@@ -7,7 +7,7 @@ import { useDisclosure } from '@mantine/hooks';
 
 function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolean>) {
     const [categories, setCategories] = useState<Categories[]>([])
-    const [openedModalCategory, {open: openModalCategory, close: closeModalCategory}] = useDisclosure(false)
+    const [openedModalCategory, { open: openModalCategory, close: closeModalCategory }] = useDisclosure(false)
     const [categoryID, setCategoryID] = useState("")
     const getCategories = useCallback(async () => {
 
@@ -34,6 +34,18 @@ function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolea
     }, [loginData])
 
     const saveCategory = useCallback(async (category_name: string) => {
+        const isAdmin = await verifyUser()
+        if (!isAdmin) {
+            showNotification({
+                color: 'red',
+                title: 'Error',
+                message: 'No tienes permisos para realizar esta acción',
+                autoClose: 5000,
+                position: 'top-right',
+            })
+
+            return false
+        }
         const url = new URL(`${getServiceUrl("categories")}/create-category`);
         url.searchParams.append("user_id", loginData.user_id)
         try {
@@ -68,10 +80,23 @@ function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolea
 
             return false
         }
-    }, [loginData, getCategories])
+    }, [loginData, getCategories, verifyUser])
 
 
     const deleteCategory = useCallback(async (category_id: string) => {
+        const isAdmin = await verifyUser()
+        if (!isAdmin) {
+            showNotification({
+                color: 'red',
+                title: 'Error',
+                message: 'No tienes permisos para realizar esta acción',
+                autoClose: 5000,
+                position: 'top-right',
+            })
+
+            return false
+        }
+
         const url = new URL(`${getServiceUrl("categories")}/delete-category`);
         url.searchParams.append("user_id", loginData.user_id)
         url.searchParams.append("category_id", category_id)
@@ -81,8 +106,8 @@ function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolea
             })
             const responseData = await response.json()
             if (!response.ok) throw new Error(responseData.msg || "Error desconocido")
-                await getCategories()
-                showNotification({
+            await getCategories()
+            showNotification({
                 color: 'green',
                 title: 'Categoría eliminada exitosamente',
                 message: '',
@@ -101,13 +126,27 @@ function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolea
             })
             return false
         }
-    }, [loginData, getCategories])
+    }, [loginData, getCategories, verifyUser])
 
     const updateCategory = useCallback(async (category_id: string, category_name: string) => {
+        const isAdmin = await verifyUser()
+        if (!isAdmin) {
+            showNotification({
+                color: 'red',
+                title: 'Error',
+                message: 'No tienes permisos para realizar esta acción',
+                autoClose: 5000,
+                position: 'top-right',
+            })
+
+            return false
+        }
+
+
         const url = new URL(`${getServiceUrl("categories")}/update-category`);
         url.searchParams.append("user_id", loginData.user_id)
         url.searchParams.append("category_id", category_id)
-        
+
         try {
             const response = await fetch(url, {
                 method: "PUT",
@@ -138,22 +177,7 @@ function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolea
             })
             return false
         }
-    }, [loginData, getCategories])
-
-    const alreadyGettedCategories = useRef(false)
-
-    useEffect(() => {
-        if (loginData && loginData.user_id) {
-            if (alreadyGettedCategories.current) return
-            alreadyGettedCategories.current = true
-            const timeout = setTimeout(() => {
-                getCategories()
-            }, 100);
-
-            return () => clearTimeout(timeout);
-        }
-
-    }, [loginData, getCategories])
+    }, [loginData, getCategories, verifyUser])
 
     const handleEditCategory = (category_id: string) => {
         setCategoryID(category_id)

@@ -6,9 +6,19 @@ function ProductsList() {
     const {
         productsHook:{
             products,
-            buildPath
+            buildPath,
+            setProductModalInfo,
+            openProductsModal
         }
     } = useAppContext()
+
+    const handleEditProduct = (product_id: string) => {
+      setProductModalInfo({
+        actionType: "edit",
+        product_id,
+      });
+      openProductsModal();
+    }
 
     const cutDescription = (description: string) => {
       if (description.length > 30) {
@@ -28,6 +38,7 @@ function ProductsList() {
                         <tr>
                             <th></th>
                             <th>Producto</th>
+                            <th>Categoría</th>
                             <th>Precio</th>
                             <th>Stock</th>
                             <th>Descripción</th>
@@ -39,16 +50,19 @@ function ProductsList() {
                            <tr key={product.product_id}>
                                 <td>
                                     <picture className='product-table-image'>
-                                    <img  src={buildPath(product.product_images[0].path)} alt={product.product_name} />
+                                    <img  src={buildPath(product.product_images.path)} alt={product.product_name} />
                                     </picture>
                                 </td>
                                <td>{product.product_name}</td>
+                               <td>{product.pr_category_name}</td>
                                <td>{parseFloat(product.product_price).toLocaleString("es-AR", { style: "currency", currency: "ARS" })}</td>
                                <td>{product.product_stock}</td>
                                <td>{cutDescription(product.product_description)}</td>
                                <td>
                                    <div className='product-table-actions'>
-                                       <Button variant='outline' color='dark'>
+                                       <Button variant='outline' color='dark'
+                                        onClick={()=>handleEditProduct(product.product_id)}
+                                       >
                                            <FaEdit />
                                        </Button>
                                        <Button variant='outline' color='red'>
