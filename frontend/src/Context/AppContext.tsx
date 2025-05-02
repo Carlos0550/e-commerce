@@ -56,8 +56,7 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
     }),[
         AuthenticationHook,
         productsHook,
-        categoriesHook,
-        width
+        categoriesHook
     ])
     
     return (
