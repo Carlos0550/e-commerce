@@ -1,15 +1,11 @@
 import "./HomeBanner.css"
 import Banner1 from "../../../../../../assets/BannerImages/image.png"
 import Banner2 from "../../../../../../assets/BannerImages/image2.webp"
-import { useEffect, useState } from "react";
+import { useAppContext } from "../../../../../../Context/AppContext";
 function HomeBanner() {
-    const [width, setWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        const res = () => setWidth(window.innerWidth)
-        window.addEventListener("resize", res)
-        return () => window.removeEventListener("resize", res)
-    }, [])
+    const {
+        width
+    } = useAppContext()
 
 
     return (

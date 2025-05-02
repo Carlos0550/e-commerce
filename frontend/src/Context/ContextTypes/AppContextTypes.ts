@@ -47,5 +47,6 @@ export interface CategoriesHookInterface{
 export interface AppContextInterface{
     AuthenticationHook: ContextAuthentication,
     productsHook: ProductsHookInterface,
-    categoriesHook: CategoriesHookInterface
+    categoriesHook: CategoriesHookInterface,
+    width: number
 }

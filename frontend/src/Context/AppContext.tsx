@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useRef } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { AppContextInterface } from "./ContextTypes/AppContextTypes";
 import UseAuthentication from "./UseAuthentication";
 import useProducts from "./useProducts";
@@ -16,6 +16,13 @@ export const useAppContext = () => {
 
 export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
     const AuthenticationHook = UseAuthentication()
+    const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const res = () => setWidth(window.innerWidth)
+        window.addEventListener("resize", res)
+        return () => window.removeEventListener("resize", res)
+    }, [])
     const { loginData, verifyUser } = AuthenticationHook
 
     const productsHook = useProducts(loginData, verifyUser)
@@ -44,11 +51,13 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
     const AppContextValues = useMemo(()=> ({
         AuthenticationHook,
         productsHook,
-        categoriesHook
+        categoriesHook,
+        width
     }),[
         AuthenticationHook,
         productsHook,
-        categoriesHook
+        categoriesHook,
+        width
     ])
     
     return (

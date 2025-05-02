@@ -4,12 +4,15 @@ import "./HomeProducts.css"
 import { Flex, Skeleton } from "@mantine/core"
 import ProductsCard from "./ProductsCard/ProductsCard"
 
+import EmptyStockPC from "../../../../../../assets/EmptyStockPC.webp"
+import EmptyStockMobile from "../../../../../../assets/EmptyStockMobile.webp"
 function HomeProducts() {
     const {
         productsHook: {
             products,
             gettingProducts
-        }
+        },
+        width
     } = useAppContext()
     return (
         <div className='home-products-container'>
@@ -44,7 +47,9 @@ function HomeProducts() {
                     ))}
                 </React.Fragment>
             ) : (
-                <React.Fragment>no hay nada</React.Fragment>
+                <picture className="empty-stock-container">
+                    <img src={width > 768 ? EmptyStockPC : EmptyStockMobile} alt="" />
+                </picture>
             )}
         </div>
     )
