@@ -1,0 +1,17 @@
+.home-filters-select{
+    width: 100%;
+    max-width: 300px;
+}
+
+.home-filters-input{
+    flex: 1;
+    min-width: 300px;
+}
+
+@media(max-width:718px){
+    .home-filters-select, .home-filters-input{
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
