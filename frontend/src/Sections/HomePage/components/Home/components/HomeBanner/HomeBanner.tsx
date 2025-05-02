@@ -10,9 +10,11 @@ function HomeBanner() {
         window.addEventListener("resize", res)
         return () => window.removeEventListener("resize", res)
     }, [])
+
+
     return (
         <picture className="home-banner">
-            <img src={width > 502 ? Banner1 : Banner2} alt="" />
+            <img src={width > 768 ? Banner1 : Banner2} alt="" />
         </picture>
     )
 }
