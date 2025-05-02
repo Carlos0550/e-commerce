@@ -69,13 +69,13 @@ function useProductForm() {
 
     const date = new Date().toISOString().split("T")[0];
     const newImages = files.map((file) => {
-      const renamedFile = new File([file], `${date}-${uuid().slice(0, 8)}`, {
+      const renamedFile = new File([file], `${date}-${uuid().slice(0, 8)}.${file.type.split("/")[1]}`, {
         type: file.type,
         lastModified: file.lastModified,
       });
 
       return {
-        image_name: `${date}-${uuid().slice(0, 8)}`,
+        image_name: `${date}-${uuid().slice(0, 8)}.${file.type.split("/")[1]}`,
         originFileObj: renamedFile,
         image_id: uuid(),
         isNew: true,
@@ -217,7 +217,7 @@ function useProductForm() {
   const handleEditProduct = async () => {
     setFetchingImages(true)
     const images = await getProductImages(product_id)
-    setTimeout(() => setFetchingImages(false), 1000)
+    setFetchingImages(false)
     const productImagesCast = images.map((i) => ({
       image_id: uuid(),
       image_name: `${i.name}.${i.type.split("/")[1]}`,
