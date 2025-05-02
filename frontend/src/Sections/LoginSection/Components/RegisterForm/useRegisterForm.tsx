@@ -4,7 +4,7 @@ import { showNotification } from '@mantine/notifications';
 import { useAppContext } from '../../../../Context/AppContext';
 
 
-function useRegisterForm() {
+function useRegisterForm(setShowLogin: React.Dispatch<React.SetStateAction<boolean>>) {
     const { 
       AuthenticationHook:{
         createUserAccount
@@ -71,8 +71,19 @@ function useRegisterForm() {
         e.preventDefault()
         if(handleVerifyFields()){
             setCreatingAccount(true)
-            await createUserAccount(registerFormValues)
+            const result = await createUserAccount(registerFormValues)
             setTimeout(()=> setCreatingAccount(false), 1000)
+
+            if(result){
+                setShowLogin(true)
+                setRegisterFormValues({
+                    user_name: '',
+                    user_email: '',
+                    user_password: '',
+                    user_password_confirmation: '',
+                    register_as_admin: false
+                })
+            }
         }
     }
 

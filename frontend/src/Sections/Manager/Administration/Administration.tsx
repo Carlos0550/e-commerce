@@ -3,7 +3,6 @@ import "./Administration.css"
 import { Tabs } from '@mantine/core'
 import Products from './Products/Products';
 import Categories from './Categories/Categories';
-import Banners from './Banners/Banners';
 function Administration() {
   const [activeTab, setActiveTab] = useState<string | null>('tab1');
   return (

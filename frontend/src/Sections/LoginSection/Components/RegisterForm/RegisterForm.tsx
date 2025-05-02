@@ -2,7 +2,10 @@ import { Button, Checkbox, Flex, Input, Loader, PasswordInput } from '@mantine/c
 import useRegisterForm from './useRegisterForm'
 import { useState } from 'react'
 
-function RegisterForm() {
+interface Props{
+    setShowLogin: React.Dispatch<React.SetStateAction<boolean>>
+}
+function RegisterForm({ setShowLogin }: Props) {
 
     const {
         registerFormValues,
@@ -11,7 +14,7 @@ function RegisterForm() {
         errores,
         handleCheckboxChange,
         creatingAccount
-    } = useRegisterForm()
+    } = useRegisterForm(setShowLogin)
     const [width] = useState(window.innerWidth)
     return (
         <div>

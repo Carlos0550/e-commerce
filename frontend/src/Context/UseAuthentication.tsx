@@ -27,8 +27,8 @@ function UseAuthentication() {
             showNotification({
                 color: 'green',
                 title: 'Cuenta creada exitosamente',
-                message: '',
-                autoClose: 2500,
+                message: 'Usá las credenciales que proporcionaste para iniciar sesión',
+                autoClose: 4000,
                 position: 'top-right',
             })
 

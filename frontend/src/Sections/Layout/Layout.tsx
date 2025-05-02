@@ -63,9 +63,9 @@ function Layout({children}: {children: React.ReactNode}) {
                         <ul className="nav-list">
                             <li ><Link to={"/"}>Inicio</Link></li>
                             <li><Link to={"/admin-dashboard/administration"} onClick={HandleScrollInNavMobile}>Administración</Link></li>
-                            <li><Link to={""}>Clientes</Link></li>
+                            {/* <li><Link to={""}>Clientes</Link></li>
                             <li><Link to={""}>Despachos</Link></li>
-                            <li><Link to={""}>Configuraciones</Link></li>
+                            <li><Link to={""}>Configuraciones</Link></li> */}
                         </ul>
                     </nav>
 

@@ -23,7 +23,7 @@ function LoginManager() {
             <div className='login-manager__wrapper'>
                 <div className='login-manager-node'>
                     {showLogin && <LoginForm />}
-                    {!showLogin && <RegisterForm />}
+                    {!showLogin && <RegisterForm setShowLogin={setShowLogin}/>}
                 </div>
 
                 <div className='toggle-loginmanager-container'>

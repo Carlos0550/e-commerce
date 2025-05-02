@@ -63,7 +63,7 @@
   .nav-list {
     display: flex;
     gap: 1rem;
-    justify-content: space-evenly;
+    padding: 0 1rem;
     align-items: center;
     height: 100%;
     width: 100%;
