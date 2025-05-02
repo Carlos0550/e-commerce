@@ -29,7 +29,7 @@ function Navbar() {
                     </>
                 )}
                 {width <= 730 && (
-                    <Button mb={10} variant="white" color="red">Iniciar sesión</Button>
+                    <Button mb={10} variant="white" color="red" onClick={()=> navigate("/authentication")}>Iniciar sesión</Button>
                 )}
                 <ul className='home-nav-list'>
                     <li><Link to="/">Inicio</Link></li>
