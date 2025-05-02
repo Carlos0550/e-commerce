@@ -68,7 +68,7 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
 
     url.searchParams.append("user_id", loginData.user_id)
     actionType === "edit" && url.searchParams.append("product_id", productModalInfo.product_id)
-
+    
     for (const [key, value] of Object.entries(productValues)) {
       if (key === "product_images") continue
       formData.append(key, value || "")
