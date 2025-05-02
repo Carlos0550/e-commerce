@@ -1,5 +1,4 @@
 INSERT INTO products(
-    pr_manager_id,
     product_name,
     product_description,
     product_price,
@@ -12,6 +11,5 @@ INSERT INTO products(
     $3,
     $4,
     $5,
-    $6,
-    $7
+    $6
 );

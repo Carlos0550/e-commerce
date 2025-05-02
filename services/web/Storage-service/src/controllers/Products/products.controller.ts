@@ -19,7 +19,7 @@ export const saveProduct: RequestHandler<{}, any, ProductFormValues, QueryWithUs
     product_description,
     product_price,
     product_stock,
-    product_category,
+    product_category
   } = req.body;
   console.log(product_category)
 
@@ -38,7 +38,6 @@ export const saveProduct: RequestHandler<{}, any, ProductFormValues, QueryWithUs
     })
 
     const response = await client.query(SPQueries[0], [
-      user_id,
       product_name,
       product_description,
       product_price,

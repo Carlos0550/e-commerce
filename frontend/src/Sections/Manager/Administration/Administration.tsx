@@ -15,7 +15,7 @@ function Administration() {
           <Tabs.List>
             <Tabs.Tab value="tab1">Productos</Tabs.Tab>
             <Tabs.Tab value="tab2">Categorias</Tabs.Tab>
-            <Tabs.Tab value='tab3'>Banners</Tabs.Tab>
+            {/* <Tabs.Tab value='tab3'>Banners</Tabs.Tab> */}
           </Tabs.List>
 
           <Tabs.Panel value="tab1" pt="xs">
@@ -24,9 +24,9 @@ function Administration() {
           <Tabs.Panel value="tab2" pt="xs">
             <Categories/>
           </Tabs.Panel>
-          <Tabs.Panel value='tab3'>
+          {/* <Tabs.Panel value='tab3'>
             <Banners/>
-          </Tabs.Panel>
+          </Tabs.Panel> */}
         </Tabs>
       </div>
     </div>

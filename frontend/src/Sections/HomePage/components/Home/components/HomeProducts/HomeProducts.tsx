@@ -23,17 +23,7 @@ function HomeProducts() {
                     <Skeleton animate height={200} width={200} />
                     <Skeleton animate height={200} width={200} />
                     <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
-                    <Skeleton animate height={200} width={200} />
+                    
                 </Flex>
             ) : !gettingProducts && products && products.length > 0 ? (
                 <React.Fragment>
