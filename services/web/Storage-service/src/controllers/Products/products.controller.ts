@@ -292,7 +292,6 @@ export const EditProduct: RequestHandler<{}, {}, EditProductRouteInterface, { pr
       }
     } else {
       //Cliente no subio archivos y no elimina
-      console.log("Se ejecuta la Query: ", EPQueries[3])
       const result = await client.query(EPQueries[3], [
         product_name,
         product_description,
@@ -314,6 +313,77 @@ export const EditProduct: RequestHandler<{}, {}, EditProductRouteInterface, { pr
     }
   } catch (error) {
     console.log("Error al actualizar el producto: ", error)
+    client && await client.query("ROLLBACK")
+    res.status(500).json({
+      msg: "Error interno del servidor, por favor espere unos segundos e intente nuevamente."
+    })
+    return;
+  } finally {
+    client?.release()
+  }
+}
+
+const handleDeleteLocalImages = async (imagesPaths: string[]): Promise<boolean> => {
+  if(imagesPaths.length === 0) return false
+
+  try {
+    for (let i = 0; i < imagesPaths.length; i++) {
+      const imgPath = imagesPaths[i]
+      await fs.unlink(path.join(__dirname, "../../", imgPath))
+    }
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+export const deleteProduct: RequestHandler<{}, {}, {}, { product_id: string }> = async (
+  req,
+  res
+): Promise<void> => {
+  const queries = getQueries(queriesFolder);
+  const { "deleteProduct.sql": DPQueries } = queries;
+  if (!queries || !DPQueries) {
+    res.status(500).json({
+      msg: "Error interno del servidor, por favor espere unos segundos e intente nuevamente."
+    })
+    return;
+  }
+
+  const { product_id } = req.query;
+
+  if (!product_id) {
+    res.status(400).json({
+      msg: "El servidor no recibió el ID del producto."
+    })
+    return;
+  }
+
+  let client;
+  try {
+    client = await pool.connect()
+    await client.query("BEGIN")
+    const resultPaths = await client.query(DPQueries[0], [product_id])
+    const imagesPaths = resultPaths.rows[0].paths
+    const resultDeleteImages = await handleDeleteLocalImages(imagesPaths)
+
+    if(resultDeleteImages) {
+      const resultDeleteInDb = await client.query(DPQueries[1], [product_id])
+      if (resultDeleteInDb.rowCount! > 0) {
+        await client.query("COMMIT")
+        res.status(200).json({
+          msg: "Producto eliminado con exito"
+        })
+        return;
+      } else {
+        throw new Error("Error desconocido, no fue posible eliminar el producto, por favor espere unos segundos e intente nuevamente.")
+      }
+    }else{
+      throw new Error("Error desconocido, no fue posible eliminar el producto, por favor espere unos segundos e intente nuevamente.")
+    }
+   
+  } catch (error) {
+    console.log("Error al eliminar el producto: ", error)
     client && await client.query("ROLLBACK")
     res.status(500).json({
       msg: "Error interno del servidor, por favor espere unos segundos e intente nuevamente."

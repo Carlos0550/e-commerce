@@ -4,7 +4,7 @@ import { ProductFormValues } from "../Types/UploadFilesTypes";
 import { checkIsAdmin } from "../utils/CheckIsAdmin";
 import { rollbackFiles } from "../utils/RollbackFiles";
 import { QueryWithUserId } from "../Types/QueryWithUserId";
-import { EditProduct, getProductImages, getProducts, saveProduct } from "../controllers/Products/products.controller";
+import { deleteProduct, EditProduct, getProductImages, getProducts, saveProduct } from "../controllers/Products/products.controller";
 import { RequestHandler } from "express-serve-static-core";
 import { EditProductRouteInterface } from "../Types/UpdateProductsBody";
 import { verifyUser } from "../utils/VerifyUser";
@@ -115,4 +115,23 @@ const EditProductRoute:RequestHandler<{},{},EditProductRouteInterface,{user_id:s
     next()
 }
 router.put("/edit-product",verifyUser, uploads.array("product_images"), EditProductRoute, EditProduct)
+
+const DeleteProductRoute:RequestHandler<{},{},{},{product_id: string, user_id: string}> = async(
+    req,
+    res,
+    next
+): Promise<void> => {
+    const { product_id } = req.query
+
+    if(!product_id){
+        res.status(400).json({
+            msg: "El servidor no recibió el ID del producto, espere unos segundos e intente nuevamente."
+        });
+        return;
+    }
+    next()
+}
+
+router.delete("/delete-product", verifyUser, DeleteProductRoute, deleteProduct)
+
 export default router;

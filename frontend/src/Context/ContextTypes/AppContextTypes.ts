@@ -23,7 +23,8 @@ export interface ProductsHookInterface{
     openProductsModal: () => void, 
     closeProductsModal: () => void,
     productModalInfo: ProductModalInfo, 
-    setProductModalInfo: React.Dispatch<React.SetStateAction<ProductModalInfo>>
+    setProductModalInfo: React.Dispatch<React.SetStateAction<ProductModalInfo>>,
+    deleteProduct: (product_id: string) => Promise<boolean>
 }
 
 export interface CategoriesHookInterface{

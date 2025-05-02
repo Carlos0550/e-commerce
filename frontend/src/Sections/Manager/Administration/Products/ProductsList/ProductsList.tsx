@@ -2,13 +2,15 @@ import "./ProductsList.css"
 import { Button, Popover } from '@mantine/core'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { useAppContext } from '../../../../../Context/AppContext'
+import { useState } from "react"
 function ProductsList() {
     const {
         productsHook:{
             products,
             buildPath,
             setProductModalInfo,
-            openProductsModal
+            openProductsModal,
+            deleteProduct
         }
     } = useAppContext()
 
@@ -18,6 +20,12 @@ function ProductsList() {
         product_id,
       });
       openProductsModal();
+    }
+    const [deletingProduct, setDeletingProduct] = useState<boolean>(false)
+    const handleDeleteProduct = async(product_id: string) => {
+      setDeletingProduct(true)
+      await deleteProduct(product_id)
+      setDeletingProduct(false)
     }
 
     const cutDescription = (description: string) => {
@@ -65,7 +73,9 @@ function ProductsList() {
                                        >
                                            <FaEdit />
                                        </Button>
-                                       <Button variant='outline' color='red'>
+                                       <Button variant='outline' color='red' loading={deletingProduct} disabled={deletingProduct}
+                                        onClick={()=> handleDeleteProduct(product.product_id)}
+                                       >
                                            <FaTrash/>
                                        </Button>
                                    </div>

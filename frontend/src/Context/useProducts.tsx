@@ -138,6 +138,38 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
     }
 
   },[])
+
+  const deleteProduct = useCallback(async (product_id: string): Promise<boolean> => {
+      const url = new URL(`${getServiceUrl("products")}delete-product`)
+      url.searchParams.append("product_id", product_id)
+      url.searchParams.append("user_id", loginData.user_id)
+      try {
+        const response = await fetch(url,{
+          method: "DELETE"
+        })
+        const responseD = await response.json()
+        if (!response.ok) throw new Error(responseD.msg || "Error desconocido")
+        await getProducts()
+        showNotification({
+          color: 'green',
+          title: 'Producto eliminado exitosamente',
+          message: '',
+          autoClose: 2500,
+          position: 'top-right',
+        })
+        return true
+      } catch (error) {
+        console.log(error)
+        showNotification({
+          color: 'red',
+          title: 'Error al eliminar el producto',
+          message: error instanceof Error ? error.message : "Error desconocido",
+          autoClose: 5500,
+          position: 'top-right',
+        })
+        return false
+      }
+  },[loginData, getProducts])
   
 
   const buildPath = useCallback((prPath: string) => {
@@ -165,10 +197,10 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
 
   return useMemo(() => ({
     saveProduct, getProducts, products, buildPath, getProductImages, openedProductsModal, openProductsModal, closeProductsModal,
-    productModalInfo, setProductModalInfo
+    productModalInfo, setProductModalInfo, deleteProduct
   }), [
     saveProduct, getProducts, products, getProductImages, openedProductsModal, openProductsModal, closeProductsModal,
-    productModalInfo, setProductModalInfo
+    productModalInfo, setProductModalInfo, deleteProduct
   ])
 }
 
