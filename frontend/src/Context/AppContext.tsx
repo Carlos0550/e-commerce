@@ -29,7 +29,6 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
         const retries = 5
         for (let i = 0; i < retries; i++) {
             const result = await Promise.all([getProducts(), getCategories()])
-            console.log(result)
             if (result[0] && result[1]) return
         }
     }
@@ -37,7 +36,7 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
 
     const alreadyGetted = useRef(false)
     useEffect(() => {
-        if ( loginData && loginData.user_id && !alreadyGetted.current) {
+        if (!alreadyGetted.current) {
             alreadyGetted.current = true
             handleGetDataWithRetries()
         }

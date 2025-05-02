@@ -109,7 +109,6 @@ export const deleteCategory = async (req:Request<{},{},SaveCategoryBody,{categor
 
 export const getCategories = async (req:Request<{},{},{},QueryWithUserId>, res:Response): Promise<void> => {
     const queries = getQueries(queriesFolder);
-    const { user_id } = req.query
     const { "getCategories.sql": GCQueries } = queries;
     if(!queries || !GCQueries){
         res.status(500).json({
@@ -121,7 +120,7 @@ export const getCategories = async (req:Request<{},{},{},QueryWithUserId>, res:R
     let client;    
     try {
         client = await pool.connect()
-        const response = await client.query(GCQueries[0],[user_id])
+        const response = await client.query(GCQueries[0])
         res.status(200).json({
             categories: response.rows
         })

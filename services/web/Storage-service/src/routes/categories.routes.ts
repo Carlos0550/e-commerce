@@ -45,14 +45,6 @@ router.get("/get-categories", async(
     res: Response,
     next:NextFunction
 ): Promise<void> => {
-    const { user_id } = req.query
-    if(!user_id){
-        res.status(400).json({
-            msg: "Todos los campos son requeridos"
-        })
-        return
-    }
-
     next()
 }, getCategories)
 

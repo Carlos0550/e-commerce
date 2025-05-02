@@ -24,7 +24,8 @@ export interface ProductsHookInterface{
     closeProductsModal: () => void,
     productModalInfo: ProductModalInfo, 
     setProductModalInfo: React.Dispatch<React.SetStateAction<ProductModalInfo>>,
-    deleteProduct: (product_id: string) => Promise<boolean>
+    deleteProduct: (product_id: string) => Promise<boolean>,
+    gettingProducts: boolean
 }
 
 export interface CategoriesHookInterface{

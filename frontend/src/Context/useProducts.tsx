@@ -15,10 +15,11 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
     product_id: ""
   })
 
+  const [gettingProducts, setGettingProducts] = useState(false)
   const getProducts = useCallback(async () => {
-    
     const url = new URL(`${getServiceUrl("products")}get-products`)
     try {
+      setGettingProducts(true)
       const response = await fetch(url)
       const responseD = await response.json()
       if (response.status === 404) {
@@ -40,6 +41,8 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
       })
 
       return false
+    }finally{
+      setTimeout(() => setGettingProducts(false), 1000)
     }
 
   }, [loginData])
@@ -197,10 +200,10 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
 
   return useMemo(() => ({
     saveProduct, getProducts, products, buildPath, getProductImages, openedProductsModal, openProductsModal, closeProductsModal,
-    productModalInfo, setProductModalInfo, deleteProduct
+    productModalInfo, setProductModalInfo, deleteProduct, gettingProducts
   }), [
     saveProduct, getProducts, products, getProductImages, openedProductsModal, openProductsModal, closeProductsModal,
-    productModalInfo, setProductModalInfo, deleteProduct
+    productModalInfo, setProductModalInfo, deleteProduct, gettingProducts
   ])
 }
 

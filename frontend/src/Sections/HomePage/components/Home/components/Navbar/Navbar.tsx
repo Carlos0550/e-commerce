@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { Button } from "@mantine/core";
 import { IconShoppingCart, IconUser } from "@tabler/icons-react";
 
-function Navbar() {
+interface Props{
+    navbarScrolled: boolean
+}
+function Navbar({navbarScrolled}: Props) {
     const [width, setWidth] = useState(window.innerWidth)
     const [contractHeader, setContractHeader] = useState<boolean>(false)
     const navigate = useNavigate()
@@ -16,7 +19,7 @@ function Navbar() {
     }, [])
     return (
         <header className={contractHeader && width <= 730 ? 'home-header contracted' : 'home-header'}>
-            <nav className='home-nav'>
+            <nav className={navbarScrolled ? "home-nav scrolled" : "home-nav"}>
                 {width <= 730 && (
                     <>
                         <div className="home-menu-icon" onClick={() => setContractHeader(!contractHeader)}>
