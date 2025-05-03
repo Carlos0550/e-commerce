@@ -10,7 +10,7 @@ const domain = {
 }
 
 const handleBuildPath = () => {
-  return nodeEnv ? domain.development :  domain.production
+  return domain.production
 }
 export const GetProductDetails: RequestHandler<{}, {}, {}, { product_id: string }> = async (req, res) => {
   const { product_id } = req.query;
