@@ -1,6 +1,6 @@
 import "./HomeBanner.css"
-import Banner1 from "../../../../../../assets/BannerImages/image.png"
-import Banner2 from "../../../../../../assets/BannerImages/image2.webp"
+import Banner1 from "../../../../../../assets/BannerImages/BannerPC.webp"
+import Banner2 from "../../../../../../assets/BannerImages/BannerMobile.webp"
 import { useAppContext } from "../../../../../../Context/AppContext";
 function HomeBanner() {
     const {
