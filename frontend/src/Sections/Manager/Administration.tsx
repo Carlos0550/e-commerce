@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import "./Administration.css"
 import { Tabs } from '@mantine/core'
-import Products from './Products/Products';
-import Categories from './Categories/Categories';
+import Products from './Administration/Products/Products';
+import Categories from './Administration/Categories/Categories';
 function Administration() {
   const [activeTab, setActiveTab] = useState<string | null>('tab1');
   return (

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import Layout from "../Layout/Layout"
-import Administration from "./Administration/Administration"
+import Administration from "./Administration"
 import { useAppContext } from "../../Context/AppContext"
 import { useEffect } from "react"
 
