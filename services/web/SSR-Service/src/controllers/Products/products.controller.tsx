@@ -7,7 +7,7 @@ const isProduction = true
 
 const domain = {
   development: "http://localhost:5001/api/",
-  production: "https://products-service-development.up.railway.app"
+  production: "https://products-service-development.up.railway.app/api"
 }
 
 const handleBuildPath = () => {
