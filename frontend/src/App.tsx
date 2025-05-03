@@ -3,8 +3,8 @@ import './App.css'
 import { Routes, Route} from "react-router-dom"
 import LoginManager from './Sections/LoginSection/LoginManager'
 import ManagerHome from './Sections/Manager/ManagerHome'
-import HomeProductView from './Sections/HomePage/Home/components/HomeProductView/HomeProductView'
-import Home from './Sections/HomePage/Home/Home'
+import HomeProductView from './Sections/HomePage/components/HomeProductView/HomeProductView'
+import Home from './Sections/HomePage/Home'
 
 function App() {
   return (

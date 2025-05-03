@@ -1,7 +1,7 @@
 import { Input, Select } from "@mantine/core"
 import "./HomeFIlters.css"
 import { FaSearch } from "react-icons/fa"
-import { useAppContext } from "../../../../../Context/AppContext"
+import { useAppContext } from "../../../../Context/AppContext"
 
 function HomeFilters() {
     const {
