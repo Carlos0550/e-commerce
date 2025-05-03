@@ -17,8 +17,9 @@ function Navbar({navbarScrolled}: Props) {
         window.addEventListener("resize", res)
         return () => window.removeEventListener("resize", res)
     }, [])
+
     return (
-        <header className={contractHeader && width <= 730 ? 'home-header contracted' : 'home-header'}>
+        <header className={contractHeader && width <= 730 ? 'home-header extended' : 'home-header contracted'}>
             <nav className={navbarScrolled ? "home-nav scrolled" : "home-nav"}>
                 {width <= 730 && (
                     <>
@@ -26,7 +27,7 @@ function Navbar({navbarScrolled}: Props) {
                             <IoMenu size={20} />
                         </div>
 
-                        <div className="home-menu-icon cart" onClick={() => setContractHeader(!contractHeader)}>
+                        <div className="home-menu-icon cart" >
                             <IconShoppingCart size={20} />
                         </div>
                     </>

@@ -1,7 +1,7 @@
 import { LoginDataState } from "./AuthenticationTypes";
 import { Categories } from "./CategoriesTypes";
 import { ProductFormValues } from "./ProductFormTypes";
-import { ProductImages, ProductModalInfo, Products } from "./ProductTypes";
+import { ProductDetails, ProductImages, ProductModalInfo, Products } from "./ProductTypes";
 import { RegisterFormValues } from "./RegisterUserForm";
 
 export interface ContextAuthentication{
@@ -25,7 +25,8 @@ export interface ProductsHookInterface{
     productModalInfo: ProductModalInfo, 
     setProductModalInfo: React.Dispatch<React.SetStateAction<ProductModalInfo>>,
     deleteProduct: (product_id: string) => Promise<boolean>,
-    gettingProducts: boolean
+    gettingProducts: boolean,
+    getProductDetails: (product_id: string) => Promise<string | false>
 }
 
 export interface CategoriesHookInterface{

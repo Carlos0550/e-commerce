@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 import pool from "./database"
 
+import ProductsRouter from "./routes/products.routes"
 (async() => {
     try {
         const response = await pool.query("SELECT NOW()")
@@ -24,6 +25,7 @@ app.get("/", (_req: Request, res: Response) => {
   res.send("SSR Service is ON");
 });
 
+app.use("/api", ProductsRouter)
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {

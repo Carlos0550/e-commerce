@@ -43,9 +43,6 @@
 }
 
 @media (max-width: 730px) {
-    .home-header{
-        height: 220px;
-    }
     .home-nav-list {
         flex-direction: column;
         align-items: flex-start;
@@ -96,4 +93,9 @@
 .home-header.contracted{
     transition: all 150ms ease-in-out;
     height: 50px;
+}
+
+.home-header.extended{
+    transition: all 150ms ease-in-out;
+    height: 220px;
 }

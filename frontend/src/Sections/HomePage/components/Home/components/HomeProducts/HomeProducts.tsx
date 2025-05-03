@@ -33,6 +33,7 @@ function HomeProducts() {
                             product_images={products[index].product_images}
                             product_name={products[index].product_name}
                             product_price={products[index].product_price}
+                            product_id={products[index].product_id}
                         />
                     ))}
                 </React.Fragment>

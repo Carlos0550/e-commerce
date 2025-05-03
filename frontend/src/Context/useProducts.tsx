@@ -3,7 +3,7 @@ import { ProductFormValues } from './ContextTypes/ProductFormTypes'
 import { getServiceUrl } from '../GlobalAPIs'
 import { LoginDataState } from './ContextTypes/AuthenticationTypes'
 import { showNotification } from '@mantine/notifications'
-import { ProductImages, ProductModalInfo, Products } from './ContextTypes/ProductTypes'
+import { ProductDetails, ProductImages, ProductModalInfo, Products } from './ContextTypes/ProductTypes'
 import { useDisclosure } from '@mantine/hooks'
 
 
@@ -173,6 +173,40 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
         return false
       }
   },[loginData, getProducts])
+
+  const getProductDetails = useCallback(async (product_id: string): Promise<string | false> => {
+    const url = new URL(`${getServiceUrl("ssr")}get-product-details`);
+    url.searchParams.append("product_id", product_id);
+    try {
+      const response = await fetch(url);
+  
+      if (response.status === 404) {
+        showNotification({
+          color: 'red',
+          title: 'Producto no encontrado',
+          message: 'El producto que intentas obtener no existe',
+          autoClose: 5000,
+          position: 'top-right',
+        });
+        return false;
+      }
+  
+      const html = await response.text();
+      return html;
+  
+    } catch (error) {
+      showNotification({
+        color: 'red',
+        title: 'No fue posible obtener los detalles del producto',
+        message: error instanceof Error ? error.message : 'Error desconocido',
+        autoClose: 5000,
+        position: 'top-right',
+      });
+      console.log(error);
+      return false;
+    }
+  }, []);
+  
   
 
   const buildPath = useCallback((prPath: string) => {
@@ -200,10 +234,10 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
 
   return useMemo(() => ({
     saveProduct, getProducts, products, buildPath, getProductImages, openedProductsModal, openProductsModal, closeProductsModal,
-    productModalInfo, setProductModalInfo, deleteProduct, gettingProducts
+    productModalInfo, setProductModalInfo, deleteProduct, gettingProducts, getProductDetails
   }), [
     saveProduct, getProducts, products, getProductImages, openedProductsModal, openProductsModal, closeProductsModal,
-    productModalInfo, setProductModalInfo, deleteProduct, gettingProducts
+    productModalInfo, setProductModalInfo, deleteProduct, gettingProducts, getProductDetails
   ])
 }
 
