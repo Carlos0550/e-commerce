@@ -1,4 +1,6 @@
-SELECT COUNT(*) FROM managers WHERE manager_email = $1;
+SELECT
+  (SELECT allow_to_administrate FROM managers WHERE manager_email = $1) AS allow_to_administrate,
+  (SELECT COUNT(*) FROM managers WHERE manager_email = $1) AS count;
 
 SELECT * FROM managers WHERE manager_email = $1;
 

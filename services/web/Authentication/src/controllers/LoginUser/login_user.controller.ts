@@ -28,7 +28,7 @@ export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Resp
     let client;
     try {
         client = await pool.connect()
-        const {rows: [{count}]} = await client.query(LQueries[0],[
+        const {rows: [{count, allow_to_administrate}]} = await client.query(LQueries[0],[
             user_email
         ])
         if(count && parseInt(count) === 0){
@@ -48,7 +48,13 @@ export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Resp
 
             return;
         }else{
-            console.log(LQueries[2])
+            if(!allow_to_administrate){
+                res.status(401).json({
+                    msg: "No tienes permisos para acceder a tu cuenta, espera a que un administrador te habilite."
+                })
+                return
+            }
+
             const today = dayjs().format("YYYY-MM-DD HH:mm:ss")
             console.log("today: ", today)
             await client.query(LQueries[2],[today, user_email])

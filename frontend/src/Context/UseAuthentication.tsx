@@ -23,11 +23,14 @@ function UseAuthentication() {
                 body: JSON.stringify(formValues)
             })
             const responseData = await response.json()
+            console.log(responseData)
             if (!response.ok) throw new Error(responseData.msg || "Error desconocido")
             showNotification({
                 color: 'green',
                 title: 'Cuenta creada exitosamente',
-                message: 'Usá las credenciales que proporcionaste para iniciar sesión',
+                message: responseData.is_master
+                ? 'Usá las credenciales que proporcionaste para iniciar sesión'
+                : 'Deberás esperar a que un administrador active tu cuenta.',
                 autoClose: 4000,
                 position: 'top-right',
             })

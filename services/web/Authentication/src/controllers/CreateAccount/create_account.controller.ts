@@ -28,9 +28,11 @@ export const createAccount = async(req:Request<{},{},CreateAccountBody,{}>, res:
     try {
         client = await pool.connect()
         if(register_as_admin){
-            const { rows: [{ count }] } = await client.query(CRQueries[0],[
+            const result = await client.query(CRQueries[0],[
                 user_email
             ])
+
+            const { count,masters_count } = result.rows[0]
 
             if(count && count > 0){
                 res.status(400).json({
@@ -39,16 +41,22 @@ export const createAccount = async(req:Request<{},{},CreateAccountBody,{}>, res:
                 return
             }   
 
+            const createWithMaster = masters_count >= 1 ? false : true
+            const allow_to_administrate = masters_count >= 1 ? false : true
+
             const hashedPassword = await hashPassword(user_password)
             const response = await client.query(CRQueries[1],[
                 user_name,
                 user_email,
-                hashedPassword
+                hashedPassword,
+                createWithMaster,
+                allow_to_administrate
             ])
 
             if(response?.rowCount && response.rowCount > 0){
                 res.status(200).json({
-                    msg: "Cuenta creada exitosamente, Bienvenido" + user_name
+                    msg: "Cuenta creada exitosamente, Bienvenido" + user_name,
+                    is_master: createWithMaster
                 })
                 return
             }else{
@@ -60,7 +68,7 @@ export const createAccount = async(req:Request<{},{},CreateAccountBody,{}>, res:
             }
         }else{
             res.status(400).json({
-                msg: "Funcionalidad en desarrollo"
+                msg: "Pronto podrás registrar tu cuenta como usuario, mientras tanto, puedes hacer compras directas por Whatsapp."
             })
             return
         }
