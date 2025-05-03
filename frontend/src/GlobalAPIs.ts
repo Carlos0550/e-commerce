@@ -1,4 +1,4 @@
-const isProduction = true
+const isProduction = false
 const BASE_URL_DEV = "http://localhost"
 
 type ServiceConfig = {
