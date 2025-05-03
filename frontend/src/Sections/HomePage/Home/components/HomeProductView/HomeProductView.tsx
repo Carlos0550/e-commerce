@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom"
 import "./HomeProductView.css"
 import { useEffect, useRef, useState } from "react"
-import { useAppContext } from "../../../../../../Context/AppContext"
+import { useAppContext } from "../../../../../Context/AppContext"
 import Navbar from "../Navbar/Navbar"
-import WaitingLoader from "../../../../../../Loaders/WaitingLoader/WaitingLoader"
+import WaitingLoader from "../../../../../Loaders/WaitingLoader/WaitingLoader"
 
 
 function HomeProductView() {

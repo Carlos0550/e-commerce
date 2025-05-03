@@ -1,11 +1,11 @@
 import React from "react"
-import { useAppContext } from "../../../../../../Context/AppContext"
+import { useAppContext } from "../../../../../Context/AppContext"
 import "./HomeProducts.css"
 import { Flex, Skeleton } from "@mantine/core"
 import ProductsCard from "./ProductsCard/ProductsCard"
 
-import EmptyStockPC from "../../../../../../assets/EmptyStockPC.webp"
-import EmptyStockMobile from "../../../../../../assets/EmptyStockMobile.webp"
+import EmptyStockPC from "./assets/EmptyStockPC.webp"
+import EmptyStockMobile from "./assets/EmptyStockMobile.webp"
 function HomeProducts() {
     const {
         productsHook: {

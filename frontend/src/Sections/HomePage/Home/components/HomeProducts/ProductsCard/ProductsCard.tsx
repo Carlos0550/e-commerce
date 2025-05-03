@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
-import { useAppContext } from "../../../../../../../Context/AppContext"
-import { Products } from "../../../../../../../Context/ContextTypes/ProductTypes"
+import { useAppContext } from "../../../../../../Context/AppContext"
+import { Products } from "../../../../../../Context/ContextTypes/ProductTypes"
 import "./ProductsCard.css"
 
 interface Props {

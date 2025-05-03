@@ -2,16 +2,15 @@ import { RequestHandler } from "express";
 import { renderToString } from "react-dom/server";
 import ProductDetailSSR from "./Components/ProductDetailSSR"
 import pool from "../../database";
-
-const isProduction = true
-
+import "dotenv/config"
+const nodeEnv = process.env.NODE_ENVIRONMENT
 const domain = {
-  development: "http://localhost:5001/api/",
+  development: "http://localhost:5001/api",
   production: "https://products-service-development.up.railway.app/api"
 }
 
 const handleBuildPath = () => {
-  return isProduction ? domain.production : domain.development
+  return nodeEnv ? domain.development :  domain.production
 }
 export const GetProductDetails: RequestHandler<{}, {}, {}, { product_id: string }> = async (req, res) => {
   const { product_id } = req.query;
