@@ -31,7 +31,7 @@ export const GetProductDetails: RequestHandler<{}, {}, {}, { product_id: string 
     const html = renderToString(
       <ProductDetailSSR
         {...product}
-        buildPath={(path) => `${new URL(handleBuildPath())}${path}`}
+        buildPath={(path) => `${new URL(handleBuildPath())}/${path}`}
       />
     );
 
