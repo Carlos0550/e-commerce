@@ -46,10 +46,11 @@ function Administrators() {
         <div className="administrators-container">
             <div className="administrators-info">
                 <h3>Administradores</h3>
-                <p>Gestioná acá quien puede <strong>gestionar stock</strong>, <strong>categorías</strong>, <strong>banners</strong>, etc.</p>
+                {/* <p>Gestioná acá quien puede <strong>gestionar stock</strong>, <strong>categorías</strong>, <strong>banners</strong>, etc.</p> */}
+                <p>Sección en desarrollo</p>
             </div>
 
-            <div className="administrators-table-container">
+            {/* <div className="administrators-table-container">
                 <table className="administrators-table">
                     <thead>
                         <tr>
@@ -93,7 +94,7 @@ function Administrators() {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
         </div>
     )
 }
