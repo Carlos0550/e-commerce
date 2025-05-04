@@ -1,7 +1,8 @@
+import { Administrator } from "./AdministratorsTypes";
 import { LoginDataState } from "./AuthenticationTypes";
 import { Categories } from "./CategoriesTypes";
 import { ProductFormValues } from "./ProductFormTypes";
-import { ProductDetails, ProductImages, ProductModalInfo, Products } from "./ProductTypes";
+import { ProductImages, ProductModalInfo, Products } from "./ProductTypes";
 import { RegisterFormValues } from "./RegisterUserForm";
 
 export interface ContextAuthentication{
@@ -41,13 +42,17 @@ export interface CategoriesHookInterface{
     categoryID: string,
     setCategoryID: React.Dispatch<React.SetStateAction<string>>,
     handleCloseModalCategory: () => void, 
-    handleEditCategory: (category_id: string) => void
-    
+    handleEditCategory: (category_id: string) => void   
+}
+
+export interface AdministratorHookInterface{
+    administrators: Administrator[],
 }
 
 export interface AppContextInterface{
     AuthenticationHook: ContextAuthentication,
     productsHook: ProductsHookInterface,
     categoriesHook: CategoriesHookInterface,
+    administratorHook: AdministratorHookInterface,
     width: number
 }

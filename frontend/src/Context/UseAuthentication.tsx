@@ -9,7 +9,8 @@ function UseAuthentication() {
     const [loginData, setLoginData] = useState<LoginDataState>({
         user_email: "",
         user_name: "",
-        user_id: ""
+        user_id: "",
+        is_master: false
     });
 
     const createUserAccount = useCallback(async (formValues: RegisterFormValues): Promise<boolean> => {
@@ -23,7 +24,6 @@ function UseAuthentication() {
                 body: JSON.stringify(formValues)
             })
             const responseData = await response.json()
-            console.log(responseData)
             if (!response.ok) throw new Error(responseData.msg || "Error desconocido")
             showNotification({
                 color: 'green',
@@ -64,10 +64,12 @@ function UseAuthentication() {
             const responseData = await response.json()
 
             if (!response.ok) throw new Error(responseData.msg || "Error desconocido")
+
             setLoginData({
                 user_email: responseData.user.manager_email,
                 user_name: responseData.user.manager_name,
-                user_id: responseData.user.manager_id
+                user_id: responseData.user.manager_id,
+                is_master: responseData.user.is_master
             })
             localStorage.setItem("restored_login_data", JSON.stringify({ user_id: responseData.user.manager_id }))
             showNotification({
@@ -98,7 +100,8 @@ function UseAuthentication() {
         setLoginData({
             user_email: "",
             user_name: "",
-            user_id: ""
+            user_id: "",
+            is_master: false
         })
 
         localStorage.removeItem("restored_login_data");
@@ -143,7 +146,8 @@ function UseAuthentication() {
             setLoginData({
                 user_email: user.manager_email,
                 user_name: user.manager_name,
-                user_id: user.manager_id
+                user_id: user.manager_id,
+                is_master: user.is_master
             })
             return true
         } catch (error) {

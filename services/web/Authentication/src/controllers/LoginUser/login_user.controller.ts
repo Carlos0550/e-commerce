@@ -56,7 +56,6 @@ export const loginUser = async(req:Request<{},{},CreateAccountBody,{}>, res:Resp
             }
 
             const today = dayjs().format("YYYY-MM-DD HH:mm:ss")
-            console.log("today: ", today)
             await client.query(LQueries[2],[today, user_email])
             res.status(200).json({
                 msg: "Bienvenido nuevamente a Cinnamon",

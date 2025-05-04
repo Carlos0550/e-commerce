@@ -13,6 +13,7 @@ function App() {
       <Route path="/product-details/:product_id" element={<HomeProductView/>}/>
       <Route path='/authentication' element={<LoginManager/>}/>  
       <Route path='/admin-dashboard/*' element={<ManagerHome/>}/> 
+     
     </Routes>
   )
 }

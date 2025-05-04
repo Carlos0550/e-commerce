@@ -37,7 +37,6 @@ function Navbar({navbarScrolled}: Props) {
                 )}
                 <ul className='home-nav-list'>
                     <li><Link to="/">Inicio</Link></li>
-                    <li><Link to="/">Productos</Link></li>
                     <li><Link to="/">Cómo comprar</Link></li>
                     <li><Link to="/">Contacto</Link></li>
                     <li><Link to="/">Preguntas Frecuentes</Link></li>
