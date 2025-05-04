@@ -1,11 +1,11 @@
 import pool from "../../database";
 import path from "path";
 import { getQueries } from "../../QueriesHandler";
+import { RequestHandler } from "express";
 
 const queriesFolder = path.join(__dirname, "./Queries");
 
-
-export const getAdministrators: RequestHandler = async (req, res) => {
+export const getAdministrators: RequestHandler<{},{},{},{}> = async (req, res) => {
     const queries = getQueries(queriesFolder);
     const { "getAdministrators.sql": GAQueries } = queries;
     if (!queries || !GAQueries) {
