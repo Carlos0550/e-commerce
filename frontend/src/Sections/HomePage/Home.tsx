@@ -20,7 +20,7 @@ function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 400) {
+      if (window.scrollY > 300) {
         setNavScrolled(true)
       } else {
         setNavScrolled(false)
@@ -33,7 +33,7 @@ function Home() {
   return (
     <React.Fragment>
       {showCart && <HomeCart />}
-      <div className="home-navbar-container"><Navbar navbarScrolled={navScrolled} /></div>
+      <Navbar navbarScrolled={navScrolled} />
       <div className='home-container'   >
         <HomeBanner />
         <div className="home-ads-space" ref={homeMarkerRef}>

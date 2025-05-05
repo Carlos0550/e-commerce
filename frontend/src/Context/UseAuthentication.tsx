@@ -151,6 +151,7 @@ function UseAuthentication() {
             })
             return true
         } catch (error) {
+            if(error instanceof TypeError) return false;
             console.log(error)
 
             closeSession()

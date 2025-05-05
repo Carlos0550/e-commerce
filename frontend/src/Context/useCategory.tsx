@@ -20,6 +20,7 @@ function useCategory(loginData: LoginDataState, verifyUser: () => Promise<boolea
             setCategories(responseData.categories)
             return true
         } catch (error) {
+            if(error instanceof TypeError) return false;
             console.log(error)
             showNotification({
                 color: 'red',

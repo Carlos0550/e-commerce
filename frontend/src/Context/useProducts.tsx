@@ -31,6 +31,7 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
       setProducts(responseD.products)
       return true
     } catch (error) {
+      if(error instanceof TypeError) return false;
       console.log(error)
       showNotification({
         color: 'red',
@@ -42,7 +43,7 @@ function useProducts(loginData: LoginDataState, verifyUser: () => Promise<boolea
 
       return false
     }finally{
-      setTimeout(() => setGettingProducts(false), 1000)
+      setGettingProducts(false)
     }
 
   }, [loginData])

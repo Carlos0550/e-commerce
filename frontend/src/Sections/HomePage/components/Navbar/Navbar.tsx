@@ -6,12 +6,12 @@ import { Button } from "@mantine/core";
 import { IconShoppingCart, IconUser } from "@tabler/icons-react";
 import { useAppContext } from "../../../../Context/AppContext";
 
-interface Props{
+interface Props {
     navbarScrolled: boolean
 }
-function Navbar({navbarScrolled}: Props) {
+function Navbar({ navbarScrolled }: Props) {
     const {
-        cartHook:{
+        cartHook: {
             setShowCart,
             showCart
         }
@@ -27,10 +27,11 @@ function Navbar({navbarScrolled}: Props) {
 
     const handleOpenCart = () => setShowCart(!showCart)
     return (
+        <div className="home-navbar-container">
         <header className={contractHeader && width <= 730 ? 'home-header extended' : 'home-header contracted'}>
-            <nav className={navbarScrolled ? "home-nav scrolled" : "home-nav"}>
-                {width <= 730 && (
-                    <>
+            {width <= 730 ? (
+                <>
+                    <nav className={navbarScrolled ? "home-nav scrolled" : "home-nav"}>
                         <div className="home-menu-icon" onClick={() => setContractHeader(!contractHeader)}>
                             <IoMenu size={20} />
                         </div>
@@ -38,26 +39,42 @@ function Navbar({navbarScrolled}: Props) {
                         <div className="home-menu-icon cart" onClick={() => handleOpenCart()}>
                             <IconShoppingCart size={20} />
                         </div>
-                    </>
-                )}
-                {width <= 730 && (
-                    <Button mb={10} variant="white" color="red" onClick={()=> navigate("/authentication")}>Iniciar sesión</Button>
-                )}
-                <ul className='home-nav-list'>
-                    <li><Link to="/">Inicio</Link></li>
-                    <li><Link to="/">Cómo comprar</Link></li>
-                    <li><Link to="/">Contacto</Link></li>
-                    <li><Link to="/">Preguntas Frecuentes</Link></li>
-                    {width > 730 && <li className="home-nav-custom-icons">
-                        <div className="home-nav-icon" onClick={()=> navigate("/authentication")}><IconUser size={25} /></div>
+                        <Button mb={10} variant="white" color="red" onClick={() => navigate("/authentication")}>Iniciar sesión</Button>
 
-                        <div className="home-nav-icon cart" onClick={() => handleOpenCart()}>
-                            <IconShoppingCart size={25} />
-                        </div>
-                    </li>}
-                </ul>
-            </nav>
+                        <ul className='home-nav-list'>
+                            <li><Link to="/">Inicio</Link></li>
+                            <li><Link to="/faq">Preguntas Frecuentes</Link></li>
+                        </ul>
+                        
+                    </nav>
+                </>
+            ) : (
+                <>
+                    <nav className={navbarScrolled ? "home-nav scrolled" : "home-nav"}>
+                        <p className="home-logo">Cinnamon</p>
+                        <ul className='home-nav-list'>
+                            <li><Link to="/">Inicio</Link></li>
+                            <li><Link to="/faq">Preguntas Frecuentes</Link></li>
+                        </ul>
+                        <li className="home-nav-custom-icons">
+                                <div className="home-nav-icon"
+                                    onClick={() => navigate("/authentication")}
+                                >
+                                    <IconUser size={25} />
+                                </div>
+
+                                <div
+                                    className="home-nav-icon cart"
+                                    onClick={() => handleOpenCart()}
+                                >
+                                    <IconShoppingCart size={25} />
+                                </div>
+                            </li>
+                    </nav>
+                </>
+            )}
         </header>
+        </div>
     )
 }
 

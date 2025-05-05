@@ -60,9 +60,7 @@ function HomeProductView() {
     return (
         <div className="home-product-view-container">
             {!gettingProducts && (
-                <div className="home-navbar-container">
-                    <Navbar navbarScrolled={true} />
-                </div>
+                 <Navbar navbarScrolled={true} />
             )}
             {gettingProducts ? <WaitingLoader /> : (
                 <div
