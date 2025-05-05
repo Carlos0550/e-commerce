@@ -1,19 +1,21 @@
-import { useParams } from "react-router-dom"
+import { useEffect, useRef, useState } from "react";
+import WaitingLoader from "../../../../Loaders/WaitingLoader/WaitingLoader";
+import Navbar from "../Navbar/Navbar";
+import { handleAddToCart, handleBuyWhatsApp, swapMainImage } from "./utils/ProductViewHidratation";
+import { useParams } from "react-router-dom";
+import { useAppContext } from "../../../../Context/AppContext";
 import "./HomeProductView.css"
-import { useEffect, useRef, useState } from "react"
-import { useAppContext } from "../../../../Context/AppContext"
-import Navbar from "../Navbar/Navbar"
-import WaitingLoader from "../../../../Loaders/WaitingLoader/WaitingLoader"
-
+import HomeCart from "../HomeCart/HomeCart";
 
 function HomeProductView() {
     const { product_id } = useParams();
     const [gettingProducts, setGettingProducts] = useState(false);
     const [productHTML, setProductHTML] = useState<string>("");
-
     const containerRef = useRef<HTMLDivElement>(null);
-
-    const { productsHook: { getProductDetails } } = useAppContext();
+    const { 
+        productsHook: { getProductDetails },
+        cartHook
+     } = useAppContext();
 
     const handleGetProduct = async () => {
         setGettingProducts(true);
@@ -26,28 +28,34 @@ function HomeProductView() {
         if (product_id) handleGetProduct();
     }, [product_id]);
 
+    const onContainerClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        const container = containerRef.current!;
+
+        if (target.matches(".thumbnail img")) {
+            swapMainImage(container, target as HTMLImageElement);
+            return;
+        }
+
+        const addBtn = target.closest<HTMLButtonElement>(".add-to-cart");
+        if (addBtn) {
+            handleAddToCart(addBtn, cartHook.addProductToCart);
+            return;
+        }
+
+        const whatsappBtn = target.closest<HTMLButtonElement>(".buy-now");
+        if (whatsappBtn) {
+            handleBuyWhatsApp(whatsappBtn, cartHook.handleGoToWhatsapp);
+            return;
+        }
+    };
+
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
-
-        const onClick = (event: MouseEvent) => {
-            const target = event.target as HTMLElement;
-            if (target.matches(".thumbnail img")) {
-                const mainImg = container.querySelector<HTMLImageElement>(".main-product-image");
-                if (mainImg) {
-                    mainImg.src = (target as HTMLImageElement).src;
-                }
-            }
-        };
-
-        container.addEventListener("click", onClick);
-        return () => {
-            container.removeEventListener("click", onClick);
-        };
+        container.addEventListener("click", onContainerClick);
+        return () => container.removeEventListener("click", onContainerClick);
     }, [productHTML]);
-
-
-
 
     return (
         <div className="home-product-view-container">
@@ -63,8 +71,9 @@ function HomeProductView() {
                     dangerouslySetInnerHTML={{ __html: productHTML }}
                 />
             )}
+            {cartHook.showCart && <HomeCart />}
         </div>
-    )
+    );
 }
 
 export default HomeProductView
