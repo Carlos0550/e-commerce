@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaCartPlus, FaWhatsapp } from 'react-icons/fa';
 
 export interface ProductImages {
@@ -29,7 +28,6 @@ function ProductDetailSSR({
 }: Props) {
   const mainImage = product_images[0] ? buildPath(product_images[0].path) : "";
   return (
-    <article className="product-detail">
       <div className="product-layout">
         <section className="product-images-section">
           {mainImage && (
@@ -58,8 +56,14 @@ function ProductDetailSSR({
           <h1 className="product-title">{product_name}</h1>
           <p className="product-price">${product_price}</p>
           <div className="product-actions">
-            <button className="add-to-cart">Agregar al <FaCartPlus /></button>
-            <button className="buy-now">Comprar directamente <FaWhatsapp size={20} /></button>
+            <button 
+                className="add-to-cart"
+                data-product-id={product_id}
+              >Agregar al <FaCartPlus /></button>
+            <button 
+                className="buy-now"
+                data-product-id={product_id}
+              >Comprar directamente <FaWhatsapp size={20} /></button>
           </div>
           <section className="product-info-section">
             <div
@@ -69,7 +73,6 @@ function ProductDetailSSR({
           </section>
         </header>
       </div>
-    </article>
   );
 }
 

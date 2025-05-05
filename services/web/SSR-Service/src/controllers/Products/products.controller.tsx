@@ -3,7 +3,6 @@ import { renderToString } from "react-dom/server";
 import ProductDetailSSR from "./Components/ProductDetailSSR"
 import pool from "../../database";
 import "dotenv/config"
-const nodeEnv = process.env.NODE_ENVIRONMENT
 const domain = {
   development: "http://localhost:5001/api",
   production: "https://products-service-development.up.railway.app/api"
