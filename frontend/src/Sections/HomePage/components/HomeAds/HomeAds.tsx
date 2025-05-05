@@ -1,4 +1,4 @@
-import { JSX, useState } from "react"
+import { JSX, useCallback, useEffect, useState } from "react"
 import "./HomeAds.css"
 function HomeAds() {
     const [ads, setAds] = useState<string[]>([
@@ -13,18 +13,22 @@ function HomeAds() {
         "Maquillaje que cuida tu piel",
         "Realzá tu belleza natural"
     ])
+    const [mainAdd, setMainAdd] = useState<string>("¡Maquillajes en tendencia!");
 
-    function getRandomAd(): JSX.Element {
+    const getRandomAd = useCallback(() => {
         if (!ads.length) return <p></p>;
 
         const randomIndex = Math.floor(Math.random() * ads.length);
         const randomAd = ads[randomIndex];
 
-        return <p className="ads-title">{randomAd}</p>;
-    }
+        return setMainAdd(randomAd);
+    },[])
 
+    useEffect(()=>{
+        getRandomAd()
+    },[getRandomAd])
     return {
-        getRandomAd
+        mainAdd
     }
 }
 
