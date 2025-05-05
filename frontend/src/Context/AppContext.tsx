@@ -4,6 +4,7 @@ import UseAuthentication from "./UseAuthentication";
 import useProducts from "./useProducts";
 import useCategory from "./useCategory";
 import useAdministrators from "./useAdministrators";
+import useCart from "./useCart";
 
 const AppContext = createContext<AppContextInterface | undefined>(undefined);
 
@@ -29,6 +30,9 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
     const productsHook = useProducts(loginData, verifyUser)
     const categoriesHook = useCategory(loginData, verifyUser)
     const administratorHook = useAdministrators(loginData, verifyUser)
+    const cartHook = useCart(
+        loginData, productsHook.products, productsHook.buildPath
+    )
 
     const { getProducts } = productsHook
     const { getCategories } = categoriesHook
@@ -54,12 +58,14 @@ export const AppContextProvider = ({children}: {children: React.ReactNode}) => {
         productsHook,
         categoriesHook,
         administratorHook,
+        cartHook,
         width
     }),[
         AuthenticationHook,
         productsHook,
         categoriesHook,
-        administratorHook
+        administratorHook,
+        cartHook
     ])
     
     return (
