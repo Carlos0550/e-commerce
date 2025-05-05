@@ -1,5 +1,6 @@
 import { Administrator } from "./AdministratorsTypes";
 import { LoginDataState } from "./AuthenticationTypes";
+import { Cart } from "./CartTypes";
 import { Categories } from "./CategoriesTypes";
 import { ProductFormValues } from "./ProductFormTypes";
 import { ProductImages, ProductModalInfo, Products } from "./ProductTypes";
@@ -49,10 +50,24 @@ export interface AdministratorHookInterface{
     administrators: Administrator[],
 }
 
+export interface CartHookInterface{
+    cart: Cart[],
+    setCart: React.Dispatch<React.SetStateAction<Cart[]>>
+    showCart: boolean, 
+    setShowCart: React.Dispatch<React.SetStateAction<boolean>>,
+    addProductToCart: (product_id: string) => boolean
+    handleGoToWhatsapp: (product_id: string) => void,
+    removeProductFromCart: (product_id: string) => void,
+    setOneProductQuantity: (product_id: string) => void,
+    removeOneProductQuantity: (product_id: string) => void,
+    totalCart: number
+}
+
 export interface AppContextInterface{
     AuthenticationHook: ContextAuthentication,
     productsHook: ProductsHookInterface,
     categoriesHook: CategoriesHookInterface,
     administratorHook: AdministratorHookInterface,
+    cartHook: CartHookInterface,
     width: number
 }
