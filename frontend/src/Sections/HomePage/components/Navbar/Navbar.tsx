@@ -4,11 +4,18 @@ import { IoMenu } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { Button } from "@mantine/core";
 import { IconShoppingCart, IconUser } from "@tabler/icons-react";
+import { useAppContext } from "../../../../Context/AppContext";
 
 interface Props{
     navbarScrolled: boolean
 }
 function Navbar({navbarScrolled}: Props) {
+    const {
+        cartHook:{
+            setShowCart,
+            showCart
+        }
+    } = useAppContext()
     const [width, setWidth] = useState(window.innerWidth)
     const [contractHeader, setContractHeader] = useState<boolean>(false)
     const navigate = useNavigate()
@@ -18,6 +25,7 @@ function Navbar({navbarScrolled}: Props) {
         return () => window.removeEventListener("resize", res)
     }, [])
 
+    const handleOpenCart = () => setShowCart(!showCart)
     return (
         <header className={contractHeader && width <= 730 ? 'home-header extended' : 'home-header contracted'}>
             <nav className={navbarScrolled ? "home-nav scrolled" : "home-nav"}>
@@ -27,7 +35,7 @@ function Navbar({navbarScrolled}: Props) {
                             <IoMenu size={20} />
                         </div>
 
-                        <div className="home-menu-icon cart" >
+                        <div className="home-menu-icon cart" onClick={() => handleOpenCart()}>
                             <IconShoppingCart size={20} />
                         </div>
                     </>
@@ -43,7 +51,7 @@ function Navbar({navbarScrolled}: Props) {
                     {width > 730 && <li className="home-nav-custom-icons">
                         <div className="home-nav-icon" onClick={()=> navigate("/authentication")}><IconUser size={25} /></div>
 
-                        <div className="home-nav-icon cart" onClick={() => setContractHeader(!contractHeader)}>
+                        <div className="home-nav-icon cart" onClick={() => handleOpenCart()}>
                             <IconShoppingCart size={25} />
                         </div>
                     </li>}
