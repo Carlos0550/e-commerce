@@ -20,13 +20,11 @@ export const saveCategory = async (req:Request<{},{},SaveCategoryBody,QueryWithU
     }
 
     const { category_name } = req.body
-    const { user_id } = req.query
     let client;
     try {
         client = await pool.connect()
         await client.query(SCQueries[0],[
             category_name,
-            user_id
         ]);
 
         res.status(200).json({
@@ -53,13 +51,12 @@ export const updateCategory = async (req:Request<{},{},SaveCategoryBody,UpdateCa
     }    
 
     const { category_name } = req.body
-    const { user_id, category_id } = req.query
+    const { category_id } = req.query
     let client;
     try {
         client = await pool.connect()
         await client.query(UCQueries[0],[
             category_name,
-            user_id,
             category_id
         ]);
 

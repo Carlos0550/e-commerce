@@ -1,7 +1,5 @@
 INSERT INTO categories(
-    category_name,
-    ct_manager_id
+    category_name
 ) VALUES(
-    $1,
-    $2
+    $1
 );
