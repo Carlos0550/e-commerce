@@ -1,0 +1,16 @@
+---
+import Navbar from "../../components/Navbar/Navbar"
+import HomeProductView from "./HomeProductView"
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{}</title>
+</head>
+<body>
+    <Navbar navbarScrolled={true} client:only />
+    <HomeProductView client:load/>
+</body>
+</html>

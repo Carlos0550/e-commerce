@@ -1,5 +1,8 @@
 ---
-
+import HomeBanner from "../components/HomeBanner/HomeBanner";
+import HomeAds from  "../components/HomeAds/HomeAds"
+import HomeWrapper from "../components/utils/HomeWrapper"
+import Navbar from "../components/Navbar/Navbar";
 ---
 
 <html lang="en">
@@ -8,9 +11,15 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Cinnamon-Shop</title>
+		<link rel="stylesheet" href="/css/index.css">
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<article class="home-container">
+			<Navbar client:only/>
+			<HomeBanner client:only="react"/>
+			<HomeAds client:load/>
+			<HomeWrapper client:only/>
+		</article>
 	</body>
 </html>

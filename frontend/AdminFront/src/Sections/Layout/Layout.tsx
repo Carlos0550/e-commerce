@@ -19,6 +19,13 @@ function Layout({ children }: { children: React.ReactNode }) {
         }
     }
 
+    const handleNavigate = (target: string) => {
+        const environment = import.meta.env.MODE
+        window.location.href = environment === "development"
+            ? new URL("http://localhost:4321" + target).href
+            : new URL("https://cinnamon-makeup.com" + target).href
+    }
+
     return (
         <div className="manager-container">
             <div className="manager-welcome">
@@ -33,7 +40,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
             <nav className="nav">
                 <ul className="nav-list">
-                    <li ><Link to={"/"}>Página principal</Link></li>
+                    <li onClick={() => handleNavigate("/")}><a>Página principal</a></li>
                     <li><Link to={"/admin-dashboard/administration"} onClick={HandleScrollInNavMobile}>Administración</Link></li>
                     {loginData.is_master && (<li><Link to={"/admin-dashboard/managers"}>Gestores</Link></li>)}
                     {/* <li><Link to={""}>Despachos</Link></li>

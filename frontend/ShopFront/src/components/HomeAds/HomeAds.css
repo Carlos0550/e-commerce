@@ -1,0 +1,17 @@
+.ads-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(270deg, #a0522d, #cd853f, #deb887, #a0522d, #a0522d);
+  background-size: 400% 100%;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: earthFlow 8s ease-in-out infinite;
+  text-align: center;
+}
+
+@keyframes earthFlow {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}

@@ -29,3 +29,5 @@ e-commerce
 services/Storage-service/src/uploads/*
 services/Storage-service/.env
 services/SSR-Service/.env
+frontend/AdminFront/.env
+frontend/ShopFront/.env
