@@ -30,7 +30,7 @@ function HomeProductView() {
 
     const handleGetProduct = async () => {
         setGettingProducts(true);
-        const html = await getProductDetails(productId || "");
+        const { html } = await getProductDetails(productId || "");
         setGettingProducts(false);
         if (typeof html === "string") setProductHTML(html);
     };
@@ -70,7 +70,7 @@ function HomeProductView() {
         return () => {
           container.removeEventListener("click", onContainerClick);
         };
-        }, 300);
+        }, 100);
       }, [onContainerClick]);
       
 

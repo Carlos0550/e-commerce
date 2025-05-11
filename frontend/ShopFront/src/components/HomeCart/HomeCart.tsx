@@ -135,10 +135,10 @@ function HomeCart() {
                             </div>
                         )
                         : (
-                            <>
+                            <div className="cart-total-container">
                                 <p className="cart-total">Total: {totalCart.toLocaleString("es-AR", { style: "currency", currency: "ARS" })}</p>
                                 <button className="finish-purchase" onClick={() => handleFinishPurchase()}><FaWhatsapp size={25}/> Terminar compra</button>
-                            </>
+                            </div>
                         )
                     }
                 </div>

@@ -21,6 +21,13 @@ interface CartState {
   handleGoToWhatsapp: (product_id: string) => void;
 }
 
+const handleGetTotalCart = (cart: Cart[]) => {
+  const total = cart.reduce((acc, item) => {
+    return acc + parseFloat(item.product_price) * item.product_quantity;
+  }, 0);
+  return total;
+};
+
 export const useCartStore = create<CartState>((set, get) => ({
   showCart: false,
   setShowCart: (value) => set({ showCart: value }),
@@ -28,11 +35,16 @@ export const useCartStore = create<CartState>((set, get) => ({
   cart: (() => {
     try {
       const saved = localStorage.getItem("cart");
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      const total = parsed.reduce((acc:any, item:any) => acc + parseFloat(item.product_price) * item.product_quantity, 0);
+      // seteás ambos de una
+      setTimeout(() => set({ totalCart: total }), 100); 
+      return parsed;
     } catch {
       return [];
     }
   })(),
+  
 
   setCart: (items) => {
     set({ cart: items });

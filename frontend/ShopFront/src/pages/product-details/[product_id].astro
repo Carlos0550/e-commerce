@@ -2,18 +2,33 @@
 import HomeProductView from "./HomeProductView";
 import Notifications from "./utils/Notifications";
 import { getServiceUrl } from "../../components/utils/GlobalAPIs";
+import { buildPath } from "../../components/utils/PathBuilder";
 
 const url = Astro.url;
 const pathParts = url.pathname.split("/");
 const productId = pathParts[pathParts.length - 1];
 
-let productName = "Cargando...";
+let productName = "Producto";
+let product = null;
+let plainDescription = "Descripción del producto";
+let imageUrl = "https://tusitio.com/default.jpg";
 
 try {
-  const res = await fetch(`${getServiceUrl("products")}get-product/${productId}`);
+  const res = await fetch(`${getServiceUrl("ssr")}get-product-details?product_id=${productId}`);
   if (res.ok) {
     const data = await res.json();
-    productName = data?.product?.product_name || "Producto";
+    product = data?.product;
+    productName = product?.product_name || productName;
+    
+    plainDescription = product?.product_description
+      ?.replace(/<[^>]*>/g, "")
+      ?.slice(0, 160) || plainDescription;
+
+    const firstImage = product?.product_images?.[0]?.path;
+    
+    if (firstImage) {
+      imageUrl = buildPath(firstImage);
+    }
   }
 } catch {
   productName = "Producto no encontrado";
@@ -26,7 +41,21 @@ try {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{productName}</title>
+    <meta name="description" content={plainDescription} />
+    <meta name="keywords" content={`cosmetología, ${productName}, limpieza facial, detox`} />
+
+    <meta property="og:type" content="product" />
+    <meta property="og:title" content={productName} />
+    <meta property="og:description" content={plainDescription} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:url" content={`https://tusitio.com/product/${productId}`} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={productName} />
+    <meta name="twitter:description" content={plainDescription} />
+    <meta name="twitter:image" content={imageUrl} />
   </head>
+
   <body>
     <Notifications client:only="react" richColors position="top-right" />
     <HomeProductView client:load />
