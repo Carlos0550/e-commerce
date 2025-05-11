@@ -1,6 +1,6 @@
 import { Pool } from "pg"
 import "dotenv/config"
-
+console.log("ENTORNO CONFIGURADO EN: ", process.env.NODE_ENV)
 const pool = process.env.NODE_ENV === "development"
     ? new Pool({
         user: "postgres",
