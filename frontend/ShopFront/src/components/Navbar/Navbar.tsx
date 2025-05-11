@@ -1,20 +1,21 @@
 import "./Navbar.css"
 import { IoMenu } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import useCart from "../utils/useCart";
 import { CiShoppingCart, CiUser } from "react-icons/ci";
+import { useCartStore } from "../../Stores/cartStore";
 
 interface Props {
     navbarScrolled?: boolean
 }
 function Navbar({ navbarScrolled }: Props) {
-    const {
-        setShowCart, showCart
-    } = useCart()
-    const [width, setWidth] = useState(window.innerWidth)
+   
+    const setShowCart = useCartStore((state) => state.setShowCart)
+    const showCart = useCartStore((state) => state.showCart)
+    const [width, setWidth] = useState(1200)
     const [contractHeader, setContractHeader] = useState<boolean>(false)
 
     useEffect(() => {
+        setTimeout(() => setWidth(window.innerWidth), 500)
         const res = () => setWidth(window.innerWidth)
         window.addEventListener("resize", res)
         return () => window.removeEventListener("resize", res)
@@ -40,7 +41,7 @@ function Navbar({ navbarScrolled }: Props) {
             ? new URL("http://localhost:5173" + target).href
             : new URL("https://control-panel.cinnamon-makeup.com" + target).href
     }
-    const handleOpenCart = () => setShowCart(!showCart)
+    const handleOpenCart = () => setShowCart(true)
     return (
         <div className="home-navbar-container">
             <header className={contractHeader && width <= 730 ? 'home-header extended' : 'home-header contracted'}>
@@ -58,7 +59,7 @@ function Navbar({ navbarScrolled }: Props) {
 
                             <ul className='home-nav-list'>
                                 <li><a href="/">Inicio</a></li>
-                                <li><a href="/">Preguntas Frecuentes</a></li>
+                                <li><a href="/faq">Preguntas Frecuentes</a></li>
                             </ul>
 
                         </nav>
@@ -69,7 +70,7 @@ function Navbar({ navbarScrolled }: Props) {
                             <p className="home-logo">Cinnamon</p>
                             <ul className='home-nav-list'>
                                 <li><a href="/">Inicio</a></li>
-                                <li><a href="/">Preguntas Frecuentes</a></li>
+                                <li><a href="/faq">Preguntas Frecuentes</a></li>
                             </ul>
                             <li className="home-nav-custom-icons">
                                 <div className="home-nav-icon"

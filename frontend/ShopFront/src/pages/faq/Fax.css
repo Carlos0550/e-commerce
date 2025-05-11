@@ -1,0 +1,18 @@
+.faq-container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    border: 2px solid #dbcaac;
+    
+    background-color: #eee5d7;
+    padding: 1rem;
+    padding-top: 4rem;
+    
+}
+
+.faq-accordion{
+    max-width: 1000px;
+    width: 100%;
+    margin:  0 auto;
+}
+

@@ -1,17 +1,32 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import "./HomeProducts.css"
 import { Flex, Skeleton } from "@mantine/core"
 import ProductsCard from "./ProductsCard/ProductsCard"
 
 import EmptyStockPC from "./assets/EmptyStockPC.webp"
 import EmptyStockMobile from "./assets/EmptyStockMobile.webp"
-import useProducts from "./utils/useProducts"
+import { useProductStore } from "../../Stores/productStore"
 function HomeProducts() {
-    const {
-        products,
-        gettingProducts,
-        width
-    } = useProducts()
+    const products = useProductStore((state) => state.products);
+    const gettingProducts = useProductStore((state) => state.gettingProducts);
+    const getProducts = useProductStore((state) => state.getProducts);
+    const [width, setWidth] = useState(0);
+
+    useEffect(()=>{
+        setTimeout(() => {
+            const res = () => setWidth(window.innerWidth)
+            res()
+            window.addEventListener("resize", res)
+            return () => window.removeEventListener("resize", res)
+        }, 500);
+    },[])
+
+    const alreadyRended = useRef(false)
+    useEffect(()=>{
+        if(alreadyRended.current) return;
+        alreadyRended.current = true;
+        getProducts()
+    },[])
 
     return (
         <div className='home-products-container'>

@@ -1,16 +1,34 @@
 ---
-import Navbar from "../../components/Navbar/Navbar"
-import HomeProductView from "./HomeProductView"
+import HomeProductView from "./HomeProductView";
+import Notifications from "./utils/Notifications";
+import { getServiceUrl } from "../../components/utils/GlobalAPIs";
+
+const url = Astro.url;
+const pathParts = url.pathname.split("/");
+const productId = pathParts[pathParts.length - 1];
+
+let productName = "Cargando...";
+
+try {
+  const res = await fetch(`${getServiceUrl("products")}get-product/${productId}`);
+  if (res.ok) {
+    const data = await res.json();
+    productName = data?.product?.product_name || "Producto";
+  }
+} catch {
+  productName = "Producto no encontrado";
+}
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{}</title>
-</head>
-<body>
-    <Navbar navbarScrolled={true} client:only />
-    <HomeProductView client:load/>
-</body>
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{productName}</title>
+  </head>
+  <body>
+    <Notifications client:only="react" richColors position="top-right" />
+    <HomeProductView client:load />
+  </body>
 </html>

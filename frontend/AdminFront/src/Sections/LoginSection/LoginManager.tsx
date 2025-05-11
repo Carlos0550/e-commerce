@@ -18,6 +18,12 @@ function LoginManager() {
         if (loginData && loginData.user_id) navigate("/admin-dashboard/administration")
         return
     }, [loginData])
+    const handleNavigate = (target: string) => {
+        const environment = import.meta.env.MODE
+        window.location.href = environment === "development"
+            ? new URL("http://localhost:4321" + target).href
+            : new URL("https://cinnamon-makeup.com" + target).href
+    }
     return (
         <div className='login-manager-container'>
             <div className='login-manager__wrapper'>
@@ -31,7 +37,7 @@ function LoginManager() {
                         ? (
                             <React.Fragment>
                                 <Flex gap={10} justify={"space-between"} direction={"column"}>
-                                    <Button color="cyan" onClick={() => navigate("/")}>Volver al inicio</Button>
+                                    <Button color="cyan" onClick={()=> handleNavigate("/")}>Volver al inicio</Button>
 
                                     <Space>
                                         <p>¿No tiene una cuenta?</p>
@@ -42,7 +48,11 @@ function LoginManager() {
                         ) : (
                             <React.Fragment>
                                 <Flex justify={"space-between"} gap={10} direction={"column"}>
-                                    <Button color="cyan" onClick={() => navigate("/")}>Volver al inicio</Button>
+                                    <Button 
+                                        color="cyan" 
+                                        onClick={()=> handleNavigate("/")}
+                                        
+                                        >Volver al inicio</Button>
 
                                     <Space>
                                         <p>¿Ya tiene una cuenta?</p>

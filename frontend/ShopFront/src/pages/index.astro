@@ -3,6 +3,7 @@ import HomeBanner from "../components/HomeBanner/HomeBanner";
 import HomeAds from  "../components/HomeAds/HomeAds"
 import HomeWrapper from "../components/utils/HomeWrapper"
 import Navbar from "../components/Navbar/Navbar";
+import HomeCart from "../components/HomeCart/HomeCart";
 ---
 
 <html lang="en">
@@ -20,6 +21,7 @@ import Navbar from "../components/Navbar/Navbar";
 			<HomeBanner client:only="react"/>
 			<HomeAds client:load/>
 			<HomeWrapper client:load/>
+			<HomeCart client:load/>
 		</article>
 	</body>
 </html>
