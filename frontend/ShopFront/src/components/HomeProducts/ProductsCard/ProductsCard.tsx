@@ -15,14 +15,19 @@ function ProductsCard({
   product_price,
   product_id
 }: Props) {
-
+  const truncateTitle = (title:string) => {
+    if(title.length > 25) {
+      return title.slice(0, 25) + "..."
+    }
+    return title
+  }
   return (
     <a href={`/product-details/${product_id}`} className="product-card">
       <div className="product-card__image">
         <img src={buildPath(product_images.path)} alt="" />
       </div>
       <div className="product-card__info">
-        <h3>{product_name}</h3>
+        <h3>{truncateTitle(product_name)}</h3>
         <p>{product_price}</p>
       </div>
     </a>
