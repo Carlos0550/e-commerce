@@ -6,11 +6,26 @@ interface ProductState {
   products: Products[];
   gettingProducts: boolean;
   getProducts: () => Promise<boolean>;
+  mainImage: string | null;
+  setMainImage: (src: string) => void;
+  handleAddToCart: (productId: string, addToCart: (id: string, qty: number) => void) => void;
+  handleBuyWhatsApp: (productId: string, goToWhatsapp: (id: string) => void) => void;
 }
 
 export const useProductStore = create<ProductState>((set) => ({
   products: [],
   gettingProducts: false,
+
+  mainImage: null,
+  setMainImage: (src: string) => set({ mainImage: src }),
+
+  handleAddToCart: (productId, addToCart) => {
+    addToCart(productId, 1);
+  },
+
+  handleBuyWhatsApp: (productId, goToWhatsapp) => {
+    goToWhatsapp(productId);
+  },
 
   getProducts: async () => {
     const url = new URL(`${getServiceUrl("products")}get-products`);

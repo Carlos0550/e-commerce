@@ -1,6 +1,4 @@
 import { RequestHandler } from "express";
-import { renderToString } from "react-dom/server";
-import ProductDetailSSR from "./Components/ProductDetailSSR";
 import pool from "../../database";
 import "dotenv/config";
 
@@ -41,15 +39,7 @@ export const GetProductDetails: RequestHandler<
 
     const product = result.rows[0];
 
-    const html = renderToString(
-      <ProductDetailSSR
-        {...product}
-        buildPath={(path) => `${new URL(handleBuildPath())}/${path}`}
-      />
-    );
-
     res.status(200).json({
-      html,
       product,
     });
 
