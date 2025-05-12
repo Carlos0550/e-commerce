@@ -1,4 +1,5 @@
-const isProduction = true
+const isProduction = import.meta.env.VITE_NODE_ENV === "production"
+
 const BASE_URL_DEV = "http://localhost"
 
 type ServiceConfig = {
