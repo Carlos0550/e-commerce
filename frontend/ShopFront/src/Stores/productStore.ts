@@ -3,7 +3,9 @@ import { getServiceUrl } from "../components/utils/GlobalAPIs";
 import type { Products } from "../components/Types/ProductsTypes";
 import { toast } from 'sonner'
 interface ProductState {
+  allProducts: Products[];
   products: Products[];
+  setProducts: (products: Products[]) => void;
   gettingProducts: boolean;
   getProducts: () => Promise<boolean>;
   mainImage: string | null;
@@ -13,9 +15,10 @@ interface ProductState {
 }
 
 export const useProductStore = create<ProductState>((set) => ({
+  allProducts: [],
   products: [],
   gettingProducts: false,
-
+  setProducts: (products) => set({ products }),
   mainImage: null,
   setMainImage: (src: string) => set({ mainImage: src }),
 
@@ -34,7 +37,6 @@ export const useProductStore = create<ProductState>((set) => ({
 
       const response = await fetch(url);
       const data = await response.json();
-
       if (response.status === 404) {
         set({ products: [] });
         return false;
@@ -42,7 +44,7 @@ export const useProductStore = create<ProductState>((set) => ({
 
       if (!response.ok) throw new Error(data.msg || "Error desconocido");
 
-      set({ products: data.products });
+      set({ allProducts: data.products, products: data.products });
       return true;
     } catch (error) {
       if (error instanceof TypeError) return false;

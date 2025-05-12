@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import "./HomeProducts.css"
 import { Flex, Skeleton } from "@mantine/core"
 import ProductsCard from "./ProductsCard/ProductsCard"
@@ -9,7 +9,6 @@ import { useProductStore } from "../../Stores/productStore"
 function HomeProducts() {
     const products = useProductStore((state) => state.products);
     const gettingProducts = useProductStore((state) => state.gettingProducts);
-    const getProducts = useProductStore((state) => state.getProducts);
     const [width, setWidth] = useState(0);
 
     useEffect(()=>{
@@ -19,13 +18,6 @@ function HomeProducts() {
             window.addEventListener("resize", res)
             return () => window.removeEventListener("resize", res)
         }, 500);
-    },[])
-
-    const alreadyRended = useRef(false)
-    useEffect(()=>{
-        if(alreadyRended.current) return;
-        alreadyRended.current = true;
-        getProducts()
     },[])
 
     return (
