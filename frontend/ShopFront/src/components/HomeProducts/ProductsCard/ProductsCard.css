@@ -51,6 +51,11 @@
     color: #5a3d2b;
     font-weight: 600;
     margin: 0;
+    white-space: nowrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;    
+  display: block;             
+  max-width: 100%; 
   }
   
   .product-card__info p {
