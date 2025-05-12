@@ -69,9 +69,7 @@ function HomeCart() {
         const url = `https://wa.me/${number}?text=${encodedMessage}`;
         window.open(url, "_blank");
     };
-    useEffect(() => {
-    console.log("En HomeCart: ", showCart)  
-    },[showCart])
+
     return (
         <div ref={cartRef} className={showCart ? "home-cart opened" : "home-cart closed"}>
             <h2>Retoma desde donde lo dejaste</h2>

@@ -23,7 +23,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         const environment = import.meta.env.MODE
         window.location.href = environment === "development"
             ? new URL("http://localhost:4321" + target).href
-            : new URL("https://cinnamon-makeup.com" + target).href
+            : new URL("https://shop.cinnamon-makeup.com" + target).href
     }
 
     return (
