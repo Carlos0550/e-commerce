@@ -68,6 +68,7 @@
 @media(min-width:768px) {
   .product-card {
     max-width: 240px;
+     height: 350px;
     padding: 1rem;
   }
 
