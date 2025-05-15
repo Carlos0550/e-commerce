@@ -1,4 +1,4 @@
-.home-navbar-container{
+.home-navbar-container {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -8,13 +8,14 @@
     padding: .5rem;
     z-index: 99 !important;
 }
+
 .home-header {
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
-    background: rgba( 255, 255, 255, 0.2 );
-    backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px );
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     height: 50px;
 
     display: flex;
@@ -34,7 +35,7 @@
     align-items: center;
 }
 
-.home-logo{
+.home-logo {
     font-size: 1rem;
     font-weight: bold;
     color: white;
@@ -63,7 +64,7 @@
 
 
 
-.home-menu-icon{
+.home-menu-icon {
     position: absolute;
     right: 10px;
     border-radius: 50%;
@@ -77,12 +78,12 @@
     cursor: pointer;
 }
 
-.home-menu-icon.cart{
+.home-menu-icon.cart {
     right: 50px;
 }
 
 
-.home-nav-custom-icons{
+.home-nav-custom-icons {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -90,7 +91,7 @@
     width: auto;
 }
 
-.home-nav-icon{
+.home-nav-icon {
     border-radius: 50%;
     overflow: hidden;
     aspect-ratio: 1/1;
@@ -104,24 +105,24 @@
 
 .home-nav.scrolled {
     background: #9b6444;
-    backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px );
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
-.home-menu-authentication{
+.home-menu-authentication {
     border-radius: 5px;
     border: none;
     padding: 5px;
-    background-color: #9b6444;
+    background-color: #8b5e4b;
+    outline: 1px solid white;
     color: white;
     font-weight: bold;
     cursor: pointer;
     transition: all 100ms ease-in-out;
 }
 
-.home-menu-authentication:hover{
-    background-color: #8b5e4b;
-    outline: 1px solid white;
+.home-menu-authentication:hover {
+    background-color: rgb(110, 71, 49);
 }
 
 @media (max-width: 730px) {
@@ -129,24 +130,24 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+        margin-top: .5rem;
     }
-}
 
-@media(max-width:730px){
-    .home-header{
+    .home-header {
         display: block;
     }
 
-    .home-nav{
+    .home-nav {
         display: block;
     }
-    .home-header.extended{
+
+    .home-header.extended {
         transition: all 150ms ease-in-out;
-        height: 150px;
+        height: 120px;
         background-color: #9b6444;
     }
-    
-    .home-header.contracted{
+
+    .home-header.contracted {
         height: 50px;
         transition: all 150ms ease-in-out;
     }

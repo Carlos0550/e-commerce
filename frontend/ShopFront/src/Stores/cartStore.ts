@@ -156,10 +156,9 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ totalCart: total });
   },
 
-  handleGoToWhatsapp: (product_id) => {
-    const products = useProductStore.getState().products;
-    const prod = products.find((p) => p.product_id === product_id);
-    const message = `Hola! Me interesa el producto ${prod?.product_name}. ¿Sigue disponible?`;
+  handleGoToWhatsapp: (product_name) => {
+    
+    const message = `Hola! Me interesa el producto ${product_name}. ¿Sigue disponible?`;
     const number = "5403764757599";
     window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`, "_blank");
   },

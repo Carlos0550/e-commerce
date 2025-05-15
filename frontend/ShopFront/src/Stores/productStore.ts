@@ -11,7 +11,6 @@ interface ProductState {
   mainImage: string | null;
   setMainImage: (src: string) => void;
   handleAddToCart: (productId: string, addToCart: (id: string, qty: number) => void) => void;
-  handleBuyWhatsApp: (productId: string, goToWhatsapp: (id: string) => void) => void;
 }
 
 export const useProductStore = create<ProductState>((set) => ({
@@ -24,10 +23,6 @@ export const useProductStore = create<ProductState>((set) => ({
 
   handleAddToCart: (productId, addToCart) => {
     addToCart(productId, 1);
-  },
-
-  handleBuyWhatsApp: (productId, goToWhatsapp) => {
-    goToWhatsapp(productId);
   },
 
   getProducts: async () => {

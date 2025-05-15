@@ -20,9 +20,8 @@ function HomeProductView() {
         mainImage,
         setMainImage,
         handleAddToCart: addProductToCart,
-        handleBuyWhatsApp: storeBuyNow
-      } = useProductStore();
-      
+    } = useProductStore();
+
     const [productId, setProductId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -111,15 +110,15 @@ function HomeProductView() {
                                     <button
                                         className="add-to-cart"
                                         onClick={() => addProductToCart(productData.product_id, addToCart)}
-                                        >
+                                    >
                                         Agregar al <FaCartPlus />
                                     </button>
                                     <button
-  className="buy-now"
-  onClick={() => storeBuyNow(productData.product_id, handleGoToWhatsapp)}
->
-  Comprar directamente <FaWhatsapp size={20} />
-</button>
+                                        className="buy-now"
+                                        onClick={() => handleGoToWhatsapp(productData.product_name)}
+                                    >
+                                        Comprar directamente <FaWhatsapp size={20} />
+                                    </button>
 
                                 </div>
                                 <section className="product-info-section">
