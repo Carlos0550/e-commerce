@@ -4,7 +4,7 @@ import { ProductFormValues } from "../Types/UploadFilesTypes";
 import { checkIsAdmin } from "../utils/CheckIsAdmin";
 import { rollbackFiles } from "../utils/RollbackFiles";
 import { QueryWithUserId } from "../Types/QueryWithUserId";
-import { deleteProduct, EditProduct, getProductImages, getProducts, saveProduct } from "../controllers/Products/products.controller";
+import { deleteProduct, EditProduct, getProductImages, getProducts, getProductsPaginated, saveProduct } from "../controllers/Products/products.controller";
 import { RequestHandler } from "express-serve-static-core";
 import { EditProductRouteInterface } from "../Types/UpdateProductsBody";
 import { verifyUser } from "../utils/VerifyUser";
@@ -63,6 +63,10 @@ router.post("/create-product", uploads.array("product_images"), async (
 router.get("/get-products", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     next()
 }, getProducts)
+
+router.get("/get-products-paginated", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    next()
+}, getProductsPaginated)
 
 const validateProductIdQuery: RequestHandler<{}, {}, {}, { product_id: string }> = (
     req,

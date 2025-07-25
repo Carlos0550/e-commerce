@@ -1,4 +1,4 @@
-const isProduction = process.env.NODE_ENV === "production"
+const isProduction = true
 const BASE_URL_DEV = "http://localhost"
 type ServiceConfig = {
   port: string

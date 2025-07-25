@@ -62,7 +62,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     const productStore = useProductStore.getState();
   
     if (productStore.products.length === 0) {
-      const success = await productStore.getProducts();
+      const success = await productStore.getProductsPaginated(1, 10);
       if (!success) {
         toast.error("No se pudieron cargar los productos");
         return false;
@@ -91,7 +91,9 @@ export const useCartStore = create<CartState>((set, get) => ({
           : item
       );
     } else {
-      const firstImg = prod.product_images.path;
+      const firstImg = Array.isArray(prod.product_images) && prod.product_images.length > 0 
+        ? prod.product_images[0].path 
+        : "";
       const imageUrl = firstImg ? buildPath(firstImg) : "";
       const newItem: Cart = {
         product_id: prod.product_id,

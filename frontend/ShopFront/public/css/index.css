@@ -7,10 +7,10 @@ html,body{
 }
 
 .home-container{
-    background-color: #eee5d7;
+    background-color: #fff0f5;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    border: 2px solid #dbcaac;
+    border: 2px solid #ffb6c1;
     border-radius: 0 0 5px 5px;
 }

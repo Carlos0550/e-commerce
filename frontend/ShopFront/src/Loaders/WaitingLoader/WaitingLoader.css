@@ -25,11 +25,11 @@
 }
 
 .waiting-loader::before {
-  background-color: #cdab8f;
+  background-color: #ffb6c1;
 }
 
 .waiting-loader::after {
-  background-color: #a7684f;
+  background-color: #ff69b4;
   animation-delay: .5s;
 }
 

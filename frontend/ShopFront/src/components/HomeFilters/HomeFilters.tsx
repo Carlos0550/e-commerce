@@ -5,42 +5,46 @@ import useCategories from "./utils/useCategories"
 import { useEffect, useRef, useState } from "react"
 import { useProductStore } from "../../Stores/productStore"
 
-
 function HomeFilters() {
   const { categories } = useCategories()
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [searchText, setSearchText] = useState("")
   const hasFetched = useRef(false)
 
-  const allProducts = useProductStore((state) => state.allProducts) || []
-  const setProducts = useProductStore((state) => state.setProducts)
-  const getProducts = useProductStore((state) => state.getProducts)
+  const getProductsPaginated = useProductStore((state) => state.getProductsPaginated)
+  const resetPagination = useProductStore((state) => state.resetPagination)
 
-  useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true
-      getProducts()
+  // Función para aplicar filtros
+  const applyFilters = async () => {
+    resetPagination();
+    const filters: { search?: string; category?: string } = {};
+    
+    if (searchText.trim()) {
+      filters.search = searchText.trim();
     }
-  }, [])
+    
+    if (selectedCategory) {
+      filters.category = selectedCategory;
+    }
+    
+    await getProductsPaginated(1, 10, filters);
+  };
 
-  
-
+  // Aplicar filtros cuando cambien
   useEffect(() => {
-    if (!Array.isArray(allProducts) || allProducts.length === 0) return;
-    const filtered = allProducts.filter((product) => {
-      const matchesCategory = selectedCategory ? product.product_category === selectedCategory : true
-      const matchesSearch = product.product_name.toLowerCase().includes(searchText.toLowerCase())
-      return matchesCategory && matchesSearch
-    })
-    setProducts(filtered)
-  }, [selectedCategory, searchText, allProducts])
+    const timeoutId = setTimeout(() => {
+      applyFilters();
+    }, 500); // Debounce de 500ms para búsqueda
+
+    return () => clearTimeout(timeoutId);
+  }, [searchText, selectedCategory]);
 
   const [mounted, setMounted] = useState(false)
-useEffect(() => {
-  setMounted(true)
-}, [])
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-if (!mounted) return null
+  if (!mounted) return null
 
   return (
     <div className="home-filters-container">

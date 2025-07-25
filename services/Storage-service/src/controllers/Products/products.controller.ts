@@ -96,6 +96,87 @@ export const getProducts: RequestHandler<{}, {}, {}, {}> = async (
   }
 }
 
+export const getProductsPaginated: RequestHandler<{}, {}, {}, { page: string; limit: string; search?: string; category?: string }> = async (
+  req,
+  res
+): Promise<void> => {
+  const { page = "1", limit = "10", search, category } = req.query;
+  const pageNumber = parseInt(page);
+  const limitNumber = parseInt(limit);
+  const offset = (pageNumber - 1) * limitNumber;
+
+  let client;
+  try {
+    client = await pool.connect();
+    
+    // Construir la consulta base
+    let productsQuery = `
+      SELECT p.*, c.category_name 
+      FROM products p 
+      LEFT JOIN categories c ON p.product_category = c.category_id 
+      WHERE 1=1
+    `;
+    
+    let countQuery = `
+      SELECT COUNT(*) as total 
+      FROM products p 
+      LEFT JOIN categories c ON p.product_category = c.category_id 
+      WHERE 1=1
+    `;
+    
+    const queryParams: any[] = [];
+    let paramIndex = 1;
+    
+    // Agregar filtros si existen
+    if (search) {
+      const searchCondition = ` AND (p.product_name ILIKE $${paramIndex} OR p.product_description ILIKE $${paramIndex})`;
+      productsQuery += searchCondition;
+      countQuery += searchCondition;
+      queryParams.push(`%${search}%`);
+      paramIndex++;
+    }
+    
+    if (category) {
+      const categoryCondition = ` AND p.product_category = $${paramIndex}`;
+      productsQuery += categoryCondition;
+      countQuery += categoryCondition;
+      queryParams.push(category);
+      paramIndex++;
+    }
+    
+    // Agregar ordenamiento y paginación
+    productsQuery += ` ORDER BY p.created_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+    queryParams.push(limitNumber, offset);
+    
+    // Ejecutar consultas
+    const [productsResult, countResult] = await Promise.all([
+      client.query(productsQuery, queryParams),
+      client.query(countQuery, queryParams.slice(0, -2)) // Excluir LIMIT y OFFSET del count
+    ]);
+
+    const totalProducts = parseInt(countResult.rows[0].total);
+    const hasMore = offset + limitNumber < totalProducts;
+
+    res.status(200).json({
+      products: productsResult.rows,
+      pagination: {
+        currentPage: pageNumber,
+        totalPages: Math.ceil(totalProducts / limitNumber),
+        totalProducts,
+        hasMore,
+        limit: limitNumber
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Error interno del servidor, por favor espere unos segundos e intente nuevamente."
+    });
+  } finally {
+    client?.release();
+  }
+};
+
 export const getProductImages: RequestHandler<{}, {}, {}, { product_id: string }> = async (
   req,
   res
