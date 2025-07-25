@@ -111,16 +111,24 @@ export const getProductsPaginated: RequestHandler<{}, {}, {}, { page: string; li
     
     // Construir la consulta base
     let productsQuery = `
-      SELECT p.*, c.category_name 
+      SELECT 
+        p.product_id,
+        p.product_name,
+        p.product_description,
+        p.product_price,
+        p.product_stock,
+        p.product_images,
+        p.pr_category_id as product_category,
+        c.category_name as pr_category_name
       FROM products p 
-      LEFT JOIN categories c ON p.product_category = c.category_id 
+      LEFT JOIN categories c ON p.pr_category_id = c.category_id 
       WHERE 1=1
     `;
     
     let countQuery = `
       SELECT COUNT(*) as total 
       FROM products p 
-      LEFT JOIN categories c ON p.product_category = c.category_id 
+      LEFT JOIN categories c ON p.pr_category_id = c.category_id 
       WHERE 1=1
     `;
     
@@ -137,7 +145,7 @@ export const getProductsPaginated: RequestHandler<{}, {}, {}, { page: string; li
     }
     
     if (category) {
-      const categoryCondition = ` AND p.product_category = $${paramIndex}`;
+      const categoryCondition = ` AND p.pr_category_id = $${paramIndex}`;
       productsQuery += categoryCondition;
       countQuery += categoryCondition;
       queryParams.push(category);
@@ -145,7 +153,7 @@ export const getProductsPaginated: RequestHandler<{}, {}, {}, { page: string; li
     }
     
     // Agregar ordenamiento y paginación
-    productsQuery += ` ORDER BY p.created_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+    productsQuery += ` ORDER BY p.product_id DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
     queryParams.push(limitNumber, offset);
     
     // Ejecutar consultas
