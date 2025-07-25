@@ -21,17 +21,36 @@ function ProductsCard({
     }
     return title
   }
+
+  // Obtener la primera imagen del array
+  const firstImage = Array.isArray(product_images) && product_images.length > 0 
+    ? product_images[0] 
+    : null;
+
   return (
     <a href={`/product-details/${product_id}`} className="product-card">
       <div className="product-card__image">
-        <img src={buildPath(product_images.path)} alt="" />
+        {firstImage ? (
+          <img src={buildPath(firstImage.path)} alt="" />
+        ) : (
+          <div style={{ 
+            width: '100%', 
+            height: '100%', 
+            backgroundColor: '#f0f0f0', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            color: '#999'
+          }}>
+            Sin imagen
+          </div>
+        )}
       </div>
       <div className="product-card__info">
         <h3>{truncateTitle(product_name)}</h3>
         <p>{product_price}</p>
       </div>
     </a>
-
   )
 }
 
