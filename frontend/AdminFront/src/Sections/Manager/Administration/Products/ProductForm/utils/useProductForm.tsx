@@ -151,28 +151,6 @@ function useProductForm() {
       return false
     }
 
-    if (product_description === "<p></p>" || product_description.length < 20) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "La descripcion debe tener al menos 20 caracteres",
-        position: "top-right",
-        autoClose: 2500
-      });
-      return false
-    }
-
-    if (parseFloat(product_stock) <= 0) {
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: "El stock debe ser mayor a 0",
-        position: "top-right",
-        autoClose: 2500
-      });
-      return false
-    }
-
     if (parseFloat(product_price) <= 0) {
       showNotification({
         color: "red",
