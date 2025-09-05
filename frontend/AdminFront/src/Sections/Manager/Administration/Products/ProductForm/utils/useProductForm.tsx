@@ -116,7 +116,7 @@ function useProductForm() {
     } = productForm
 
     for (const key in productForm) {
-      if (key === "product_images" || key === "product_category") continue
+      if (key === "product_images" || key === "product_category" || key === "product_description" || key === "product_stock") continue
       if (productForm[key as keyof ProductFormValues] === "") {
         showNotification({
           color: "red",

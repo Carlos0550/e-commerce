@@ -146,7 +146,6 @@ function ProductForm() {
                 <Input.Wrapper
                     label="Stock disponible"
                     description="¿Cuantos productos hay en stock?"
-                    required
                     className='product-wrapper-input'
                 >
                     {fetchingImages ? (
