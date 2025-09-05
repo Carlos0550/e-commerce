@@ -42,9 +42,7 @@ router.post("/create-product", uploads.array("product_images"), async (
 
         if (
             !product_name ||
-            !product_description ||
-            !product_price ||
-            !product_stock
+            !product_price
         ) {
             throw new Error('Verifique que los campos con "*" no esten vacíos');
         }

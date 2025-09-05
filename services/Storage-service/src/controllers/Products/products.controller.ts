@@ -39,9 +39,9 @@ export const saveProduct: RequestHandler<{}, any, ProductFormValues, QueryWithUs
 
     const response = await client.query(SPQueries[0], [
       product_name,
-      product_description,
+      product_description ? product_description : "",
       product_price,
-      product_stock,
+      product_stock ? product_stock : 2,
       product_category ? product_category : null,
       JSON.stringify(imagesPath)
     ])
